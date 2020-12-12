@@ -1,0 +1,34 @@
+#!/bin/bash
+# Orginally from Derek Taylor http://www.gitlab.com/dwt1/
+# Visit http://www.youtube.com/c/DistroTube
+# 
+# Dmenu/Rofi script for screenshots with Scrot
+
+
+IMG_PATH=/env/screenshots
+FILENAME="${IMG_PATH}/%Y%m%d-%s.png"
+UL=fb
+EDIT=gimp
+TIME=3000 #Miliseconds notification should remain visible
+
+
+prog="
+1.quick_fullscreen
+2.delayed_fullscreen
+3.section
+4.edit_fullscreen"
+
+# cmd=$(dmenu  -l 20  -nf '#999' -nb '#292d3e' -sf '#eee' -sb '#0077bb' -p 'Choose Screenshot Type'   <<< "$prog")
+cmd=$(rofi -dmenu -l 5 -p 'Choose Screenshot Type'   <<< "$prog")
+
+
+
+cd $IMG_PATH
+case ${cmd%% *} in
+
+  1.quick_fullscreen)	  scrot -d 1 "${FILENAME}"                 && notify-send -u low 'Scrot' 'Fullscreen taken and saved'  ;;
+  2.delayed_fullscreen)	scrot -d 4 "${FILENAME}"                 && notify-send -u low 'Scrot' 'Fullscreen Screenshot saved' ;;
+  3.section)	          scrot -s   "${FILENAME}"                 && notify-send -u low 'Scrot' 'Screenshot of section saved' ;;
+  4.edit_fullscreen)	  scrot -d 1 "${FILENAME}" -e "$EDIT \$f"  && notify-send -u low 'Scrot' 'Screenshot edited and saved' ;;
+  *)                		exec "'${cmd}'" ;;
+esac

@@ -1,0 +1,17 @@
+#!/bin/bash
+
+if [ ! -f /tmp/update.count ]; then
+  timeStamp=0
+else
+  timeStamp=$(date +%s -r /tmp/update.count)
+fi
+
+currentTime=$(date +%s)
+elapsedSeconds=$((currentTime - timeStamp))
+
+if [ $elapsedSeconds -gt 1800 ]; then
+  cupd=$(checkupdates | wc -l)
+  echo $cupd > /tmp/update.count
+fi 
+  
+cat /tmp/update.count

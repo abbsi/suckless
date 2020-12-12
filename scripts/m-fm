@@ -1,0 +1,4 @@
+#!/bin/sh
+# Requires dmenufm
+
+$(dmenufm -F)

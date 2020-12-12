@@ -1,0 +1,11 @@
+#! /bin/bash 
+
+SERVICE="thunderbird"
+if pgrep -x "$SERVICE" >/dev/null
+then
+  inbox_path="/path/to/your/.thunderbird/aabbccdd.default-release/ImapMail/imap.server.com/INBOX.msf"
+  mail="$(grep 'A2=[0-9]' ${inbox_path} | tail -n 1 | awk 'match($0, /A2=[0-9]+/) { print substr( $0, RSTART + 3, RLENGTH - 3 ) }')"
+  echo -e "$mail"
+else
+  echo "-"
+fi

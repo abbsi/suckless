@@ -1,0 +1,18 @@
+#!/bin/bash
+# Menu script for switching notification on or off
+
+declare -a options=("notifications-ON
+notifications-OFF")
+
+choice=$(echo -e "${options[@]}" | rofi -dmenu -g 1 -l 2 -i -p 'Notifications On/Off: ')
+
+case $choice in
+  notifications-ON)
+    dunstctl set-paused false && sleep 2 && notify-send 'Notifications On';;
+  notifications-OFF)
+    notify-send 'Notifications Off' && sleep 5 && dunstctl set-paused true;;
+    
+  *)
+    exit 1;;
+esac
+

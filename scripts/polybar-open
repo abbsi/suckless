@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "----- Launching " | tee -a /tmp/polybar-main.log /tmp/polybar-secondary.log
+rm -rf /tmp/polybar_mqueue.* && echo "--- Removed mqueue" | tee -a /tmp/polybar-main.log /tmp/polybar-secondary.log
+killall -q polybar && echo "--- Killed All Bars" | tee -a /tmp/polybar-main.log /tmp/polybar-secondary.log
+polybar --reload main >>/tmp/polybar-main.log 2>&1 & 
+polybar --reload secondary >>/tmp/polybar-secondary.log 2>&1 &

@@ -1,0 +1,31 @@
+#!/bin/bash
+prog="Terminal
+Code
+FireFox
+Thunderbird
+Slack
+Font-Manager
+Discord
+Whatsapp
+Thunar
+VNC
+Sudo Code"
+
+cmd=$(rofi -dmenu -g 2 -l 20 -p 'Open Application'   <<< "$prog")
+
+case ${cmd%% *} in
+
+  Terminal    )  exec alacritty;;
+  FireFox     )  exec firefox;;
+  Thunderbird )  exec thunderbird;;
+  Slack       )  exec slack;;
+  Discord     )  exec discord;;
+  Whatsapp    )  exec whatsapp-nativefier;;
+  Thunar      )  exec thunar;;
+  Font-Manager)  exec font-manager;;
+  Pinta       )  exec pinta;;
+  VNC         )  exec vncviewer;;
+  Code        )  exec code;;
+  Code-SU     )  exec sucode;;
+             *)  exec "'${cmd}'";;
+esac

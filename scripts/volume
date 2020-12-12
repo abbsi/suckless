@@ -1,0 +1,14 @@
+#!/bin/bash 
+
+vol=$(amixer get Master | tail -n1 | sed -r 's/.*\[(.*)%\].*/\1/')
+volstatus="$(amixer get Master | tail -n1 | sed -r 's/.*\[o(.*)\].*/\1/')"
+
+if [ "$volstatus" = "n" ]; then
+  if [ $vol -gt 30 ]; then
+    echo "  ${vol}%"
+  else
+    echo "  ${vol}%"
+  fi
+else
+  echo "  --% "
+fi
