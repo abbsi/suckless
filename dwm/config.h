@@ -100,16 +100,13 @@ static const Rule rules[] = {
    *  WM_NAME(STRING) = title
    */
   /* class      instance    title       tags mask       isfloating   monitor */
-  { "firefox",     "Navigator",   NULL,              0,            0,           1  },
-  { "Pcmanfm",     "pcmanfm",     NULL,              0,            1,           0  },
-  { NULL,          NULL,          "Spotify Premium", 0,            0,           1  },
+  { "Pcmanfm",     "pcmanfm",     NULL,              0,            1,           1  },
   { "zoom",        "zoom",        NULL,              0,            1,           1  },
   { "Slack",       "slack",       NULL,              0,            0,           1  },
   { "discord",     "discord",     NULL,              0,            0,           1  },
   { "Thunderbird", "Mail",        NULL,              0,            0,           1  },
+  { NULL,          NULL,          "Spotify Premium", 0,            0,           1  },
   
-  { "whatsapp-nativefier-d40211",    "whatsapp-nativefier-d40211",       NULL,       8,            0,           0  },
-  { "whatsapp-nativefier-930aa1",    "whatsapp-nativefier-930aa1",       NULL,       8,            0,           0  },
 };
 
 /* layout(s) */
