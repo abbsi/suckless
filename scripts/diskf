@@ -1,4 +1,0 @@
-#! /bin/bash 
-disk="$(df | awk '/\/$/ {printf("%.f%", $3/$4 * 100)}' | tail -n 1 )"
-echo -e "$disk"
-

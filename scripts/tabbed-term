@@ -1,2 +1,0 @@
-#!/bin/bash
-tabbed -r 2 alacritty --embed 1

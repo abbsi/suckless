@@ -1,5 +1,0 @@
-#! /bin/bash 
-
-# mem="$(free -h | awk '/^Mem:/ {print substr($3,1,length($3)-2) "/" substr($2,1,length($2)-2) }')"
-mem="$(free | grep Mem | awk '{printf("%.1f%", $3/$2 * 100)}')"
-echo -e "$mem"
