@@ -110,7 +110,7 @@ static const Rule rules[] = {
 };
 
 /* layout(s) */
-static const float mfact     = 0.60;  /* factor of master area size [0.05..0.95] */
+static const float mfact     = 0.66;  /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;     /* number of clients in master area */
 static const int resizehints = 0;     /* 1 means respect size hints in tiled resizals */
 
@@ -166,7 +166,9 @@ static Key keys[] = {
   { Mod1Mask|ControlMask, XK_f,        spawn, CMD("m-fm") },
   { Mod1Mask|ControlMask, XK_h,        spawn, CMD("alacritty -e bpytop") },
   { 0, XF86XK_AudioRaiseVolume,        spawn, CMD("pavolume volup --quiet") },
+  { 0, XF86XK_Launch8,                 spawn, CMD("pavolume volup --quiet") },
   { 0, XF86XK_AudioLowerVolume,        spawn, CMD("pavolume voldown --quiet") },
+  { 0, XF86XK_Launch7,                 spawn, CMD("pavolume voldown --quiet") },
   { 0, XF86XK_AudioMute,               spawn, CMD("pavolume mutetoggle --quiet") },
   { 0, XF86XK_AudioPlay,               spawn, CMD("playerctl play-pause" )},
   { 0, XF86XK_AudioStop,               spawn, CMD("playerctl stop" )},
@@ -176,6 +178,8 @@ static Key keys[] = {
   /* Custom Key Maps */
   { MODKEY|ShiftMask,  XK_Up,           rotatestack,    {.i = -1 } },
   { MODKEY|ShiftMask,  XK_Down,         rotatestack,    {.i = +1 } },
+  { MODKEY|ShiftMask,  XK_Left,         rotatestack,    {.i = -1 } },
+  { MODKEY|ShiftMask,  XK_Right,        rotatestack,    {.i = +1 } },
   { MODKEY,            XK_Up,           focusstack,     {.i = -1 } }, 
   { MODKEY,            XK_Down,         focusstack,     {.i = +1 } }, 
   { Mod1Mask,          XK_Tab,          focusstack,     {.i = +1 } }, 
@@ -199,6 +203,7 @@ static Key keys[] = {
   { MODKEY,            XK_f,            setlayout,      {.v = &layouts[4]} },
   { MODKEY,            XK_a,            setlayout,      {0} },
   { MODKEY,            XK_Home,         zoom,           {0} },
+  { MODKEY,            XK_BackSpace,    zoom,           {0} },
   { MODKEY,            XK_b,            togglebar,      {0} },
   { MODKEY,            XK_q,            killclient,     {0} },
   { MODKEY|ShiftMask,  XK_space,        togglefloating, {0} },
