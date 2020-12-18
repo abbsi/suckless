@@ -99,13 +99,13 @@ static const Rule rules[] = {
    *  WM_CLASS(STRING) = instance, class
    *  WM_NAME(STRING) = title
    */
-  /* class      instance    title       tags mask       isfloating   monitor */
-  { "Pcmanfm",     "pcmanfm",     NULL,              0,            1,           1  },
-  { "zoom",        "zoom",        NULL,              0,            1,           1  },
-  { "Slack",       "slack",       NULL,              0,            0,           1  },
-  { "discord",     "discord",     NULL,              0,            0,           1  },
-  { "Thunderbird", "Mail",        NULL,              0,            0,           1  },
-  { NULL,          NULL,          "Spotify Premium", 0,            0,           1  },
+  /* class         instance        title              tags mask    swithtotag   isfloating   monitor */
+  { "Pcmanfm",     "pcmanfm",     NULL,              0,           0,            1,           1  },
+  { "zoom",        "zoom",        NULL,              0,           0,            1,           1  },
+  { "Slack",       "slack",       NULL,              0,           0,            0,           1  },
+  { "discord",     "discord",     NULL,              0,           0,            0,           1  },
+  { "Thunderbird", "Mail",        NULL,              0,           0,            0,           1  },
+  { NULL,          NULL,          "Spotify Premium", 0,           0,            0,           1  },
   
 };
 

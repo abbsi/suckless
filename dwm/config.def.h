@@ -99,8 +99,8 @@ static const Rule rules[] = {
    *  WM_CLASS(STRING) = instance, class
    *  WM_NAME(STRING) = title
    */
-  /* class          instance       title       tags mask       isfloating   monitor */
-  { "firefox",     "Navigator",   NULL,              0,            0,           0  },
+  /* class          instance       title       tags mask   switchtotag    isfloating   monitor */
+  { "firefox",     "Navigator",   NULL,              0,        0,          0,           0  },
 };
 
 /* layout(s) */
