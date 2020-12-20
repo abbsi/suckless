@@ -15,6 +15,7 @@
 #include <X11/Xproto.h>
 #include <X11/Xutil.h>
 #include <X11/XKBlib.h>
+#include <X11/Xft/Xft.h>
 
 #include "arg.h"
 
@@ -64,16 +65,15 @@ typedef struct {
 
 typedef struct {
 	int x, y, w, h;
-	unsigned long norm[ColLast];
-	unsigned long sel[ColLast];
+	XftColor norm[ColLast];
+	XftColor sel[ColLast];
 	Drawable drawable;
 	GC gc;
 	struct {
 		int ascent;
 		int descent;
 		int height;
-		XFontSet set;
-		XFontStruct *xfont;
+		XftFont *xfont;
 	} font;
 } DC; /* draw context */
 
@@ -95,7 +95,7 @@ static void createnotify(const XEvent *e);
 static void destroynotify(const XEvent *e);
 static void die(const char *errstr, ...);
 static void drawbar(void);
-static void drawtext(const char *text, unsigned long col[ColLast]);
+static void drawtext(const char *text, XftColor col[ColLast]);
 static void *emallocz(size_t size);
 static void *erealloc(void *o, size_t size);
 static void expose(const XEvent *e);
@@ -105,7 +105,7 @@ static void focusonce(const Arg *arg);
 static void fullscreen(const Arg *arg);
 static char* getatom(int a);
 static int getclient(Window w);
-static unsigned long getcolor(const char *colstr);
+static XftColor getcolor(const char *colstr);
 static int getfirsttab(void);
 static Bool gettextprop(Window w, Atom atom, char *text, unsigned int size);
 static void initfont(const char *fontstr);
@@ -147,7 +147,7 @@ static void (*handler[LASTEvent]) (const XEvent *) = {
 	[MapRequest] = maprequest,
 	[PropertyNotify] = propertynotify,
 };
-static int bh, wx, wy, ww, wh;
+static int bh, wx, wy, ww, wh, vbh;
 static unsigned int numlockmask = 0;
 static Bool running = True, nextfocus, doinitspawn = True,
 	    fillagain = False, closelastclient = False;
@@ -163,6 +163,9 @@ static char winid[64];
 static char **cmd = NULL;
 static char *wmname = "tabbed";
 static const char *geometry = NULL;
+
+static Colormap cmap;
+static Visual *visual = NULL;
 
 char *argv0;
 
@@ -219,12 +222,6 @@ cleanup(void) {
 	free(clients);
 	clients = NULL;
 
-	if(dc.font.set) {
-		XFreeFontSet(dpy, dc.font.set);
-	} else {
-		XFreeFont(dpy, dc.font.xfont);
-	}
-
 	XFreePixmap(dpy, dc.drawable);
 	XFreeGC(dpy, dc.gc);
 	XDestroyWindow(dpy, win);
@@ -250,8 +247,7 @@ configurenotify(const XEvent *e) {
 		ww = ev->width;
 		wh = ev->height;
 		XFreePixmap(dpy, dc.drawable);
-		dc.drawable = XCreatePixmap(dpy, root, ww, wh,
-				DefaultDepth(dpy, screen));
+		dc.drawable = XCreatePixmap(dpy, win, ww, wh, 32);
 		if(sel > -1)
 			resize(sel, ww, wh - bh);
 		XSync(dpy, False);
@@ -305,20 +301,31 @@ die(const char *errstr, ...) {
 
 void
 drawbar(void) {
-	unsigned long *col;
-	int c, fc, width, n = 0;
+	XftColor *col;
+	int c, fc, width, n = 0, nbh, i;
 	char *name = NULL;
+	char tabtitle[256];
 
 	if(nclients == 0) {
 		dc.x = 0;
 		dc.w = ww;
 		XFetchName(dpy, win, &name);
 		drawtext(name ? name : "", dc.norm);
-		XCopyArea(dpy, dc.drawable, win, dc.gc, 0, 0, ww, bh, 0, 0);
+		XCopyArea(dpy, dc.drawable, win, dc.gc, 0, 0, ww, vbh, 0, 0);
 		XSync(dpy, False);
 
 		return;
 	}
+
+	nbh = nclients > 1 ? vbh : 0;
+	if (bh != nbh) {
+		bh = nbh;
+		for (i = 0; i < nclients; i++)
+			XMoveResizeWindow(dpy, clients[i]->win, 0, bh, ww, wh - bh);
+	}
+	if (bh == 0)
+		return;
+
 
 	width = ww;
 	clients[nclients-1]->tabx = -1;
@@ -353,7 +360,9 @@ drawbar(void) {
 		} else {
 			col = dc.norm;
 		}
-		drawtext(clients[c]->name, col);
+		snprintf(tabtitle, sizeof(tabtitle), "%d: %s",
+		         c + 1, clients[c]->name);
+		drawtext(tabtitle, col);
 		dc.x += dc.w;
 		clients[c]->tabx = dc.x;
 	}
@@ -362,12 +371,13 @@ drawbar(void) {
 }
 
 void
-drawtext(const char *text, unsigned long col[ColLast]) {
+drawtext(const char *text, XftColor col[ColLast]) {
 	int i, x, y, h, len, olen;
 	char buf[256];
+	XftDraw *d;
 	XRectangle r = { dc.x, dc.y, dc.w, dc.h };
 
-	XSetForeground(dpy, dc.gc, col[ColBG]);
+	XSetForeground(dpy, dc.gc, col[ColBG].pixel);
 	XFillRectangles(dpy, dc.drawable, dc.gc, &r, 1);
 	if(!text)
 		return;
@@ -388,13 +398,10 @@ drawtext(const char *text, unsigned long col[ColLast]) {
 		for(i = len; i && i > len - 3; buf[--i] = '.');
 	}
 
-	XSetForeground(dpy, dc.gc, col[ColFG]);
-	if(dc.font.set) {
-		XmbDrawString(dpy, dc.drawable, dc.font.set,
-				dc.gc, x, y, buf, len);
-	} else {
-		XDrawString(dpy, dc.drawable, dc.gc, x, y, buf, len);
-	}
+	d = XftDrawCreate(dpy, dc.drawable, visual, cmap);
+
+	XftDrawStringUtf8(d, &col[ColFG], dc.font.xfont, x, y, (XftChar8 *) buf, len);
+	XftDrawDestroy(d);
 }
 
 void *
@@ -524,15 +531,14 @@ getclient(Window w) {
 	return -1;
 }
 
-unsigned long
+XftColor
 getcolor(const char *colstr) {
-	Colormap cmap = DefaultColormap(dpy, screen);
-	XColor color;
+	XftColor color;
 
-	if(!XAllocNamedColor(dpy, cmap, colstr, &color, &color))
+	if (!XftColorAllocName(dpy, visual, cmap, colstr, &color))
 		die("tabbed: cannot allocate color '%s'\n", colstr);
 
-	return color.pixel;
+	return color;
 }
 
 int
@@ -585,41 +591,12 @@ gettextprop(Window w, Atom atom, char *text, unsigned int size) {
 
 void
 initfont(const char *fontstr) {
-	char *def, **missing, **font_names;
-	int i, n;
-	XFontStruct **xfonts;
+	if(!(dc.font.xfont = XftFontOpenName(dpy, screen, fontstr))
+	&& !(dc.font.xfont = XftFontOpenName(dpy, screen, "fixed")))
+		die("error, cannot load font: '%s'\n", fontstr);
 
-	missing = NULL;
-	if(dc.font.set)
-		XFreeFontSet(dpy, dc.font.set);
-
-	dc.font.set = XCreateFontSet(dpy, fontstr, &missing, &n, &def);
-	if(missing) {
-		while(n--)
-			fprintf(stderr, "tabbed: missing fontset: %s\n", missing[n]);
-		XFreeStringList(missing);
-	}
-
-	if(dc.font.set) {
-		dc.font.ascent = dc.font.descent = 0;
-		n = XFontsOfFontSet(dc.font.set, &xfonts, &font_names);
-		for(i = 0, dc.font.ascent = 0, dc.font.descent = 0; i < n; i++) {
-			dc.font.ascent = MAX(dc.font.ascent, (*xfonts)->ascent);
-			dc.font.descent = MAX(dc.font.descent,(*xfonts)->descent);
-			xfonts++;
-		}
-	} else {
-		if(dc.font.xfont)
-			XFreeFont(dpy, dc.font.xfont);
-		dc.font.xfont = NULL;
-		if(!(dc.font.xfont = XLoadQueryFont(dpy, fontstr))
-				&& !(dc.font.xfont = XLoadQueryFont(dpy, "fixed"))) {
-			die("tabbed: cannot load font: '%s'\n", fontstr);
-		}
-
-		dc.font.ascent = dc.font.xfont->ascent;
-		dc.font.descent = dc.font.xfont->descent;
-	}
+	dc.font.ascent = dc.font.xfont->ascent;
+	dc.font.descent = dc.font.xfont->descent;
 	dc.font.height = dc.font.ascent + dc.font.descent;
 }
 
@@ -920,7 +897,7 @@ setup(void) {
 	screen = DefaultScreen(dpy);
 	root = RootWindow(dpy, screen);
 	initfont(font);
-	bh = dc.h = dc.font.height + 2;
+	vbh = dc.h = dc.font.height + 2;
 
 	/* init atoms */
 	wmatom[WMProtocols] = XInternAtom(dpy, "WM_PROTOCOLS", False);
@@ -965,18 +942,59 @@ setup(void) {
 			wy = dh + wy - wh - 1;
 	}
 
+	XVisualInfo *vis;
+	XRenderPictFormat *fmt;
+	int nvi;
+	int i;
+
+	XVisualInfo tpl = {
+		.screen = screen,
+		.depth = 32,
+		.class = TrueColor
+	};
+
+	vis = XGetVisualInfo(dpy, VisualScreenMask | VisualDepthMask | VisualClassMask, &tpl, &nvi);
+	for(i = 0; i < nvi; i ++) {
+		fmt = XRenderFindVisualFormat(dpy, vis[i].visual);
+		if (fmt->type == PictTypeDirect && fmt->direct.alphaMask) {
+			visual = vis[i].visual;
+			break;
+		}
+	}
+
+	XFree(vis);
+
+	if (! visual) {
+		fprintf(stderr, "Couldn't find ARGB visual.\n");
+		exit(1);
+	}
+
+	cmap = XCreateColormap( dpy, root, visual, None);
+
 	dc.norm[ColBG] = getcolor(normbgcolor);
 	dc.norm[ColFG] = getcolor(normfgcolor);
 	dc.sel[ColBG] = getcolor(selbgcolor);
 	dc.sel[ColFG] = getcolor(selfgcolor);
-	dc.drawable = XCreatePixmap(dpy, root, ww, wh,
-			DefaultDepth(dpy, screen));
-	dc.gc = XCreateGC(dpy, root, 0, 0);
-	if(!dc.font.set)
-		XSetFont(dpy, dc.gc, dc.font.xfont->fid);
+	XSetWindowAttributes attrs;
+	attrs.background_pixel = dc.norm[ColBG].pixel;
+	attrs.border_pixel = dc.norm[ColFG].pixel;
+	attrs.bit_gravity = NorthWestGravity;
+	attrs.event_mask = FocusChangeMask | KeyPressMask
+		| ExposureMask | VisibilityChangeMask | StructureNotifyMask
+		| ButtonMotionMask | ButtonPressMask | ButtonReleaseMask;
+	attrs.background_pixmap = None ;
+	attrs.colormap = cmap;
 
-	win = XCreateSimpleWindow(dpy, root, wx, wy, ww, wh, 0,
-			dc.norm[ColFG], dc.norm[ColBG]);
+	win = XCreateWindow(dpy, root, wx, wy,
+	ww, wh, 0, 32, InputOutput,
+	visual, CWBackPixmap | CWBorderPixel | CWBitGravity
+	| CWEventMask | CWColormap, &attrs);
+
+	dc.drawable = XCreatePixmap(dpy, win, ww, wh,
+	                            32);
+	dc.gc = XCreateGC(dpy, dc.drawable, 0, 0);
+
+	
 	XMapRaised(dpy, win);
 	XSelectInput(dpy, win, SubstructureNotifyMask|FocusChangeMask|
 			ButtonPressMask|ExposureMask|KeyPressMask|PropertyChangeMask|
@@ -1040,15 +1058,9 @@ spawn(const Arg *arg) {
 
 int
 textnw(const char *text, unsigned int len) {
-	XRectangle r;
-
-	if(dc.font.set) {
-		XmbTextExtents(dc.font.set, text, len, NULL, &r);
-
-		return r.width;
-	}
-
-	return XTextWidth(dc.font.xfont, text, len);
+	XGlyphInfo ext;
+	XftTextExtentsUtf8(dpy, dc.font.xfont, (XftChar8 *) text, len, &ext);
+	return ext.xOff;
 }
 
 void
