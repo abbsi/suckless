@@ -96,17 +96,29 @@ static const char *tagsalt[] = { "","","","","","","",""
 
 static const Rule rules[] = {
   /* xprop(1):
-   *  WM_CLASS(STRING) = instance, class
-   *  WM_NAME(STRING) = title
+   * WM_CLASS(STRING) = instance, class
+   * WM_NAME(STRING) = title
+   * Left = 2
+   * Main = 0
+   * Right = 1
    */
-  /* class         instance        title              tags mask    swithtotag   isfloating   monitor */
-  { "Pcmanfm",     "pcmanfm",     NULL,              0,           0,            1,           1  },
-  { "zoom",        "zoom",        NULL,              0,           0,            1,           1  },
-  { "Slack",       "slack",       NULL,              0,           0,            0,           1  },
-  { "discord",     "discord",     NULL,              0,           0,            0,           1  },
-  { "Thunderbird", "Mail",        NULL,              0,           0,            0,           1  },
-  { NULL,          NULL,          "Spotify Premium", 0,           0,            0,           1  },
+  /* class                        instance                       title              tags mask    swithtotag   isfloating   monitor */
+  { "Thunderbird",                "Mail",                       NULL,              2,           0,            0,           2   },
+  { "firefox",                    "Navigator",                  NULL,              1,           0,            0,           2   },
   
+  { "Code",                       "code",                       NULL,              0,           0,            0,           0   },
+
+  
+  { "zoom",                       "zoom",                       NULL,              0,           0,            1,           1   },
+  { "Slack",                      "slack",                      NULL,              0,           0,            0,           1   },
+  { "discord",                    "discord",                    NULL,              0,           0,            0,           1   },
+  { "realvnc-vncviewer",          NULL,                         NULL,              0,           0,            1,           2   },  
+  { "whatsapp-nativefier-930aa1", "whatsapp-nativefier-930aa1", NULL,              0,           0,            0,           1   },  
+  { NULL,                         NULL,                         "Spotify Premium", 0,           0,            0,           1   },
+  
+  { "Pcmanfm",                    "pcmanfm",                    NULL,              0,           0,            0,           -1  },
+  { "Pcmanfm",                    "pcmanfm",                    "Execute File",    0,           0,            1,           -1  },
+
 };
 
 /* layout(s) */
@@ -147,8 +159,8 @@ static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() 
 static const char *dmenucmd[]     = { "dmenu_run", "-g", "3", "-l", "20", "-fn", "Source Code Pro:pixelsize=20", "-p", "Run: ", NULL };
 
 static Key keys[] = {
-  { MODKEY,               XK_space,    spawn, CMD("rofi -show drun") },
-  { Mod1Mask,             XK_space,    spawn, CMD("rofi -show window") },
+  { MODKEY,               XK_space,    spawn, CMD("m-drun") },
+  { MODKEY,               XK_x,        spawn, CMD("m-run") },
   { MODKEY|ShiftMask,     XK_Return,   spawn, {.v = dmenucmd } },
   { MODKEY,               XK_Return,   spawn, CMD("alacritty") },
   { Mod1Mask,             XK_Return,   spawn, CMD("tabbed-term") },
