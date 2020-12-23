@@ -106,14 +106,14 @@ static const Rule rules[] = {
   { "Thunderbird",                "Mail",                       NULL,              2,           0,            0,           2   },
   { "firefox",                    "Navigator",                  NULL,              1,           0,            0,           2   },
   
-  { "Code",                       "code",                       NULL,              0,           0,            0,           0   },
-
+  { "Code",                       "code",                       NULL,              2,           0,            0,           0   },
+  { "Sxiv",                       "sxiv",                       NULL,              128,         0,            0,           0   },
   
   { "zoom",                       "zoom",                       NULL,              0,           0,            1,           1   },
-  { "Slack",                      "slack",                      NULL,              0,           0,            0,           1   },
+  { "Slack",                      "slack",                      NULL,              2,           0,            0,           1   },
   { "discord",                    "discord",                    NULL,              0,           0,            0,           1   },
   { "realvnc-vncviewer",          NULL,                         NULL,              0,           0,            1,           2   },  
-  { "whatsapp-nativefier-930aa1", "whatsapp-nativefier-930aa1", NULL,              0,           0,            0,           1   },  
+  { "whatsapp-nativefier-930aa1", "whatsapp-nativefier-930aa1", NULL,              2,           0,            0,           1   },  
   { NULL,                         NULL,                         "Spotify Premium", 0,           0,            0,           1   },
   
   { "Pcmanfm",                    "pcmanfm",                    NULL,              0,           0,            0,           -1  },
