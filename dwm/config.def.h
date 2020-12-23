@@ -24,7 +24,7 @@ static const char *altbarcmd       = "polybar-open"; /* Alternate bar launch com
 
 /* Fonts */
 static const char *fonts[]         = {
-    "Anonymice Nerd Font:size=16:antialias=true:autohint=true"
+    "Anonymice Nerd Font:size=16:antialias=true:autohint=true",
     "Hack:size=16:antialias=true:autohint=true",
     "JoyPixels:size=14:antialias=true:autohint=true" };
 
@@ -106,7 +106,7 @@ static const Rule rules[] = {
 /* layout(s) */
 static const float mfact     = 0.60;  /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;     /* number of clients in master area */
-static const int resizehints = 0;     /* 1 means respect size hints in tiled resizals */
+static const int resizehints = 1;     /* 1 means respect size hints in tiled resizals */
 
 /* 0 default, 1 above, 2 aside, 3 below, 4 bottom, 5 top */
 static const int attachdirection = 3;
