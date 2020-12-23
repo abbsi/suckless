@@ -133,11 +133,11 @@ static const int attachdirection = 3;
 static const Layout layouts[] = {
   /* symbol     arrange function */
   { "  ",      col },     /* first entry is default */
+  { "舘  ",      tile },    
   { "ﳶ  ",      bstack },     
-  { "  ",      monocle },
   { "  ",      dwindle },
+  { "  ",      monocle },
   { "  ",      NULL },    /* no layout function means floating behavior */
-//{ "舘  ",      tile },    
 //{ "  ",      grid },
 //{ "  ",      spiral },
 //{ "充  ",      bstackhoriz },
@@ -209,10 +209,11 @@ static Key keys[] = {
   { MODKEY,            XK_comma,        incnmaster,     {.i = -1 } },
   { MODKEY,            XK_period,       incnmaster,     {.i = +1 } },
   { MODKEY,            XK_c,            setlayout,      {.v = &layouts[0]} }, 
-  { MODKEY,            XK_h,            setlayout,      {.v = &layouts[1]} },
-  { MODKEY,            XK_m,            setlayout,      {.v = &layouts[2]} },
+  { MODKEY,            XK_t,            setlayout,      {.v = &layouts[1]} },
+  { MODKEY,            XK_h,            setlayout,      {.v = &layouts[2]} },
   { MODKEY,            XK_d,            setlayout,      {.v = &layouts[3]} },
-  { MODKEY,            XK_f,            setlayout,      {.v = &layouts[4]} },
+  { MODKEY,            XK_m,            setlayout,      {.v = &layouts[4]} },
+  { MODKEY,            XK_f,            setlayout,      {.v = &layouts[5]} },
   { MODKEY,            XK_a,            setlayout,      {0} },
   { MODKEY,            XK_Home,         zoom,           {0} },
   { MODKEY,            XK_BackSpace,    zoom,           {0} },
@@ -220,7 +221,6 @@ static Key keys[] = {
   { MODKEY,            XK_q,            killclient,     {0} },
   { MODKEY|ShiftMask,  XK_space,        togglefloating, {0} },
   { MODKEY,            XK_n,            togglealttag,   {0} },
-  //{ MODKEY,            XK_f,            setlayout,      {.v = &layouts[5]} },
   //{ MODKEY,            XK_g,            setlayout,      {.v = &layouts[6]} },
   //{ MODKEY,            XK_s,            setlayout,      {.v = &layouts[7]} },
   //{ MODKEY,            XK_u,            setlayout,      {.v = &layouts[8]} }, 

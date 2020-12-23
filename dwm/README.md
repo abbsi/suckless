@@ -56,6 +56,8 @@ See Also https://dwm.suckless.org/patches/ipc/
 + Added `showclientcount` to turn on/off Client indicators patch
 + Some layouts add the value of `nmaster` to the layut tag (Similar to Monacle Count)
 + Extra color schemes for use with slstatus
++ Applied tilegap patch and modified to match column layout spacing. Layouts are exactly the same until you increment the `nmaster` value.
++ 
 
 # Dependencies
 ## Config.def.h Depedndencies

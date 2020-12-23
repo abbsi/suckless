@@ -2305,30 +2305,33 @@ tagmon(const Arg *arg)
 void
 tile(Monitor *m)
 {
-	unsigned int i, n, h, mw, my, ty;
+	unsigned int i, n, h, mw, my, ty, ns;
 	Client *c;
+ 
+   	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
+ 	if (n == 0)
+ 		return;
 
-	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
-	if (n == 0)
-		return;
-
-	if (n > m->nmaster)
-		mw = m->nmaster ? m->ww * m->mfact : 0;
-	else
-		mw = m->ww;
-	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
-	if (i < m->nmaster) {
-		h = (m->wh - my) / (MIN(n, m->nmaster) - i);
-		resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
-		my += HEIGHT(c);
+	if (n > m->nmaster) {
+ 		mw = m->nmaster ? m->ww * m->mfact : 0;
+		ns = m->nmaster > 0 ? 2 : 1;
 	} else {
-		h = (m->wh - ty) / (n - i);
-		resize(c, m->wx + mw, m->wy + ty, m->ww - mw - (2*c->bw), h - (2*c->bw), 0);
-		ty += HEIGHT(c);
+ 		mw = m->ww;
+		ns = 1;
 	}
+	for(i = 0, my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+ 		if (i < m->nmaster) {
+			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
+			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), False);
+			my += HEIGHT(c);
+ 		} else {
+			h = (m->wh - ty) / (n - i);
+			resize(c, m->wx + mw - gappx, m->wy + ty, m->ww - mw - (2*c->bw) + gappx, h - (2*c->bw), False);
+			ty += HEIGHT(c);
+ 		}
 	if (m->nmaster != 1) /* change layout symbol to indicate value of nmaster, TODO add original symbol */
-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "=%d=", m->nmaster);
-}
+		snprintf(m->ltsymbol, sizeof m->ltsymbol, "舘%d ", m->nmaster);
+ }
 
 void
 togglebar(const Arg *arg)
