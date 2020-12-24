@@ -14,7 +14,7 @@ static const int showbar           = 1;              /* 0 means no bar */
 static const int topbar            = 1;              /* 0 means bottom bar */
 static const int horizpadbar       = 10;             /* horizontal padding for statusbar */
 static const int vertpadbar        = 15;             /* vertical padding for statusbar */
-static const int showclientcount   = 1;              /* 1 means show client indicators on tag */
+static const int showclientind     = 1;              /* 1 means show client indicators on tag */
 
 /* Alternative Bars */
 static const int usealtbar         = 1;              /* 1 means use non-dwm status bar */
@@ -221,6 +221,7 @@ static Key keys[] = {
   { MODKEY,            XK_q,            killclient,     {0} },
   { MODKEY|ShiftMask,  XK_space,        togglefloating, {0} },
   { MODKEY,            XK_n,            togglealttag,   {0} },
+  { MODKEY,            XK_u,            focusurgent,    {0} },
   //{ MODKEY,            XK_g,            setlayout,      {.v = &layouts[6]} },
   //{ MODKEY,            XK_s,            setlayout,      {.v = &layouts[7]} },
   //{ MODKEY,            XK_u,            setlayout,      {.v = &layouts[8]} }, 

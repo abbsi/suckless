@@ -210,6 +210,7 @@ static void focus(Client *c);
 static void focusin(XEvent *e);
 static void focusmon(const Arg *arg);
 static void focusstack(const Arg *arg);
+static void focusurgent(const Arg *arg);
 static int getrootptr(int *x, int *y);
 static long getstate(Window w);
 static int gettextprop(Window w, Atom atom, char *text, unsigned int size);
@@ -971,7 +972,7 @@ drawbar(Monitor *m)
 		wdelta = selmon->alttag ? abs(TEXTW(tags[i]) - TEXTW(tagsalt[i])) / 2 : 0;
 		drw_setscheme(drw, scheme[m->tagset[m->seltags] & 1 << i ? SchemeTagsSel : SchemeTagsNorm]);
 		drw_text(drw, x, 0, w, bh, wdelta + lrpad / 2, (selmon->alttag ? tagsalt[i] : tagtext), urg & 1 << i);
-		if ( showclientcount == 1 ) {
+		if ( showclientind == 1 ) {
 			for (c = m->clients; c; c = c->next) {
 				if (c->tags & (1 << i)) {
 					drw_setscheme(drw, scheme[SchemeSel]);
@@ -1132,6 +1133,23 @@ focusstack(const Arg *arg)
 	if (c) {
 		focus(c);
 		restack(selmon);
+	}
+}
+
+void
+focusurgent(const Arg *arg) {
+	Client *c;
+	int i;
+	
+	for(c=selmon->clients; c && !c->isurgent; c=c->next);
+		
+	if(c) {
+		for(i=0; i < LENGTH(tags) && !((1 << i) & c->tags); i++);
+		if(i < LENGTH(tags)) {
+			const Arg a = {.ui = 1 << i};
+			view(&a);
+			focus(c);
+		}
 	}
 }
 
@@ -2305,7 +2323,7 @@ tagmon(const Arg *arg)
 void
 tile(Monitor *m)
 {
-	unsigned int i, n, h, mw, my, ty, ns;
+	unsigned int i, n, h, mw, my, ty;
 	Client *c;
  
    	for (n = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), n++);
@@ -2314,10 +2332,8 @@ tile(Monitor *m)
 
 	if (n > m->nmaster) {
  		mw = m->nmaster ? m->ww * m->mfact : 0;
-		ns = m->nmaster > 0 ? 2 : 1;
 	} else {
  		mw = m->ww;
-		ns = 1;
 	}
 	for(i = 0, my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
  		if (i < m->nmaster) {
@@ -2330,7 +2346,7 @@ tile(Monitor *m)
 			ty += HEIGHT(c);
  		}
 	if (m->nmaster != 1) /* change layout symbol to indicate value of nmaster, TODO add original symbol */
-		snprintf(m->ltsymbol, sizeof m->ltsymbol, "舘%d ", m->nmaster);
+		snprintf(m->ltsymbol, sizeof m->ltsymbol, "舘 %d", m->nmaster);
  }
 
 void
