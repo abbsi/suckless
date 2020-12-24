@@ -223,6 +223,7 @@ static Key keys[] = {
   { MODKEY|ShiftMask,  XK_space,        togglefloating, {0} },
   { MODKEY,            XK_n,            togglealttag,   {0} },
   { MODKEY,            XK_u,            focusurgent,    {0} },
+  { MODKEY,            XK_r,            reorganizetags, {0} },
   //{ MODKEY,            XK_g,            setlayout,      {.v = &layouts[6]} },
   //{ MODKEY,            XK_s,            setlayout,      {.v = &layouts[7]} },
   //{ MODKEY,            XK_u,            setlayout,      {.v = &layouts[8]} }, 
