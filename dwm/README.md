@@ -30,6 +30,7 @@ TODO: config.def.h deviates heavily from the typical and standard key bindings. 
 | [Status Colors](https://dwm.suckless.org/patches/statuscolors/) | enables colored text in the status bar allowing multiple color combinations for use in the status script |
 | [Useless Gap*](https://dwm.suckless.org/patches/uselessgap/) | adds "useless gaps" around windows |
 | [Tile Gap*](https://dwm.suckless.org/patches/tilegap/) | The same size gap between master and stack, window and window, and window and screen edge ... modified heavily, and probably incorrectly |
+| [Decor Hints](https://dwm.suckless.org/patches/decoration_hints/) | Make dwm respect _MOTIF_WM_HINTS property, and not draw borders around windows requesting for it. Some applications use this property to notify window managers to not draw window decorations. |
 
 
 ## Tag Management
