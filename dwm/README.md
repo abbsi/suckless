@@ -56,6 +56,7 @@ TODO: config.def.h deviates heavily from the typical and standard key bindings. 
 | [Columns](https://dwm.suckless.org/patches/columns/) | same as the default tile layout except clients in the master area are arranged in columns (i.e. left to right) |
 | [Fibonacci (Spiral and Dwindle)](https://dwm.suckless.org/patches/fibonacci/) | fibonacci (dwindle and spiral) layouts |
 | [Grid](https://dwm.suckless.org/patches/gridmode/) | gridmode (grid) layout |
+| [Save Floats](https://dwm.suckless.org/patches/save_floats/) | Saves size and position of every floating window before it is forced into tiled mode. If the window is made floating again, the old dimensions will be restored. |
 
 ## Layout Management
 
