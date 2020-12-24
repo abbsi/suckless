@@ -162,6 +162,7 @@ static const char *dmenucmd[]     = { "dmenu_run", "-g", "3", "-l", "20", "-fn",
 static Key keys[] = {
   { MODKEY,               XK_space,    spawn, CMD("m-drun") },
   { MODKEY,               XK_x,        spawn, CMD("m-run") },
+  { MODKEY,               XK_w,        spawn, CMD("m-window") },
   { MODKEY|ShiftMask,     XK_Return,   spawn, {.v = dmenucmd } },
   { MODKEY,               XK_Return,   spawn, CMD("alacritty") },
   { Mod1Mask,             XK_Return,   spawn, CMD("tabbed-term") },

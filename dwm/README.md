@@ -43,8 +43,9 @@ TODO: config.def.h deviates heavily from the typical and standard key bindings. 
 | [Alternative Tags Decoration](https://dwm.suckless.org/patches/alttagsdecoration/) | provides the ability to use alternative text for tags which contain at least one window |
 | [Client Indicators*](https://dwm.suckless.org/patches/clientindicators/) | draws a dot indicator overlayed on each tag icon for each client, the selected client is drawn as a larger horizontal line |
 | [Pertag](https://dwm.suckless.org/patches/pertag/) | adds nmaster, mfact, layouts and more per tag rather than per monitor |
-| [Switch to Tag](https://dwm.suckless.org/patches/switchtotag/)  | To be removed, irregular behavior with per tags and multimonitor, or don't use |
+| [Switch to Tag](https://dwm.suckless.org/patches/switchtotag/)  | TODO: Fix for Multi monitor setup and cancel switching back (or some other patch is conflicting). Works well in a single monitor setup |
 | [Focus Urgent](https://dwm.suckless.org/patches/focusurgent/)  | TODO: find monitor with urgent client and focus there first |
+| [TODO: Switch to Urgen] | Look into finding/creating path to switch to urgent
 
 ## Layouts
 + TODO: Fix fibonacci layouts spacing
