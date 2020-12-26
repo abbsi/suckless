@@ -7,20 +7,20 @@
 #include <X11/XF86keysym.h>
 
 /* Appearance */
-static const unsigned int borderpx = 2;              /* border pixel of windows */
-static const unsigned int snap     = 30;             /* snap pixel */
-static const unsigned int gappx    = 30;             /* pixel gap between clients */
-static const int showbar           = 1;              /* 0 means no bar */
-static const int topbar            = 1;              /* 0 means bottom bar */
-static const int horizpadbar       = 10;             /* horizontal padding for statusbar */
-static const int vertpadbar        = 15;             /* vertical padding for statusbar */
-static const int showclientind     = 1;              /* 1 means show client indicators on tag */
+static const unsigned int borderpx = 2;                /* border pixel of windows */
+static const unsigned int snap     = 30;               /* snap pixel */
+static const unsigned int gappx    = 30;               /* pixel gap between clients */
+static const int showbar           = 1;                /* 0 means no bar */
+static const int topbar            = 1;                /* 0 means bottom bar */
+static const int horizpadbar       = 10;               /* horizontal padding for statusbar */
+static const int vertpadbar        = 15;               /* vertical padding for statusbar */
+static const int showclientind     = 1;                /* 1 means show client indicators on tag */
 
 /* Alternative Bars */
-static const int usealtbar         = 1;              /* 1 means use non-dwm status bar */
-static const char *altbarclass     = "Polybar";      /* Alternate bar class name */
-static const char *alttrayname     = "tray";         /* Polybar tray instance name */
-static const char *altbarcmd       = "polybar-open"; /* Alternate bar launch command */
+static const int usealtbar         = 1;                /* 1 means use non-dwm status bar */
+static const char *altbarclass     = "Polybar";        /* Alternate bar class name */
+static const char *alttrayname     = "tray";           /* Polybar tray instance name */
+static const char *altbarcmd       = "launch-polybar"; /* Alternate bar launch command */
 
 /* Fonts */
 static const char *fonts[]         = {
