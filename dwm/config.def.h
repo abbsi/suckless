@@ -47,7 +47,7 @@ static const char col_green[]     = "#009900";
 
 /* Bar opacity ; 0xff is no transparency. Play with the value to get desired transparency. */
 static const unsigned int baralpha    = 0xdd; 
-static const unsigned int borderalpha = 0xaa; // OPAQUE;
+static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]        = {
   /*                    fg            bg            border   */
   [SchemeNorm]     = { col_offwhite,  col_bg,        col_darkgray },

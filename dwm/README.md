@@ -91,6 +91,7 @@ TODO: config.def.h deviates heavily from the typical and standard key bindings. 
 + [Alacritty Terminal](https://github.com/alacritty/alacritty)
 + [dmenu](https://tools.suckless.org/dmenu/)
 + [Polybar DWM Module](https://github.com/mihirlad55/polybar-dwm-module)
+  + This replaces polybar which includes a dwm module
 
 ## Config.h Dependencies
 + [rofi](https://github.com/davatorium/rofi) (see dot files for scripts)
