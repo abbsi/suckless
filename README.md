@@ -1,42 +1,40 @@
-ReadMe still WIP and rough.
-
 # TODO
-+ Re-expand `config.def.h` to the full setup minus the application rules
++ Re-expand `config.def.h` to the full setup without the application rules
 
 # DWM Build
 
-This is a hevily patched DWM 6.2 that suits how I like to work with it. Only tested and tried with Arch Linux and package dependencies may vary. To help e improve this setup, please post an issue mentioning any dependency failures.
+This is a heavily patched DWM 6.2 that suits how I like to work with it. Working with Arch Linux and package dependencies may vary. To help improve this setup, please post any issues mentioning any dependency failures.
 
 Few quirks to keep note off:
 * Make sure your text editor is using a nerd font to see the tag labels
-+ If you customize the layout labels (which use nerd font icon), then you may need to edit the icons in `dwm.c` in some of the layout funtions where the nmaster value is printed
++ If you customize the layout labels (which use nerd font icon), then you may need to edit the icons in `dwm.c` in some of the layout functions where the nmaster value is printed
   + Example: changing this `{ "  ", monocle },` in `config.h` will need you to change this line in `dwm.c` around line 1500: `snprintf(m->ltsymbol, sizeof m->ltsymbol, " %d", n);`
   + You can also just delete that delete and the preceding if statement
   + Will look into dynamically pulling the current icon and adding nmaster value to it
-+ Uses a good number of scripts that depend on rofi. So befrore building and running make sure you have it installed, along dmenu as a backup
++ Uses a good number of scripts that depend on rofi. So before building and running make sure you have it installed, along dmenu as a backup
 + Tile layout gaps is a little broken in edge cases
 + Other layouts don't have consistent gaps, will fix at some point
 + Status bars deal with padding in different ways. You will need to adjust script outputs by adding/removing trailing spaces either in the config.h files (slstatus or dwmblocks) or in the script outputs
 + You can enable/disable layouts by commenting them out. However, in the key bindings section, reorder the lines and define the correct index.
 
-## Screenshots
+## Screen Shots
 
-## DWM with no Status Bar
-![Built In Bar](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-default.jpg)
+### DWM with no Status Bar
+![Default DWM](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-default.jpg)
 
-## DWM with Polybar
-![Built In Bar](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-with-polybar.jpg)
+### DWM with Polybar
+![DWM with Polybar](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-with-polybar.jpg)
 
-## DWM with DWM Blocks
-![Built In Bar](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-with-blocks.jpg)
+### DWM with DWM Blocks
+![DWM with DWM Blocks](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-with-blocks.jpg)
 
-## DWM with slsstatus
-![Built In Bar](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-with-slstatus.jpg)
+### DWM with slstatus
+![DWM with slstatus](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-with-slstatus.jpg)
 
-## Quick Guide to get you up and running
+## Quick Guide
 
 ### Dependencies
-#### Config.def.h Depedndencies (to be verified on a clean install)
+#### config.def.h Dependencies (to be verified on a clean install)
 + dmenu
 + libxft-bgra
 + For IPC Patch: yajl, jsoncpp
@@ -52,8 +50,10 @@ Few quirks to keep note off:
   + picom
   + numlockx
   + dunst
+  + dwmblocks (optional)
+  + slstatus (optional)
 
-##### Additional Config.h Dependencies
+##### Additional config.h Dependencies
 + [rofi](https://github.com/davatorium/rofi) (see dot files for scripts)
 + [pavolume](https://github.com/sseemayer/pavolume)
 + scrot
@@ -75,7 +75,7 @@ Few quirks to keep note off:
    sudo make install
    ```
 4. Copy scripts into a directory in your PATH. Scripts can be found under 'bin' in my [dotfiles repository](https://github.com/abbsi/dotfiles/tree/main/bin)
-5. Check dwm.desktop went to the right place for you disaply manager to pick it up as an available sessions. e.g. `/usr/share/xsessions`
+5. Check dwm.desktop went to the right place for you display manager to pick it up as an available sessions. e.g. `/usr/share/xsessions`
 6. Run DWM 
 
 ### Troubleshooting
@@ -83,7 +83,7 @@ Few quirks to keep note off:
 + Use feh or nitrogen to setup a background
   + `feh --bg-scale /path/to/wallpaper.png`
 + ModKey+Shift+Q to quit DWM
-+ You can quickly edit the config.h, recompile and restart DWM wiithout quiting through ModKey+Shift+R
++ You can edit the config.h, recompile and restart DWM without quiting through ModKey+Shift+R
 
 ### File Location and Quicktips
 
@@ -99,14 +99,14 @@ Few quirks to keep note off:
 | ----- | ------- |
 | [Auto Start](https://dwm.suckless.org/patches/autostart/) | makes dwm run `~/.dwm/autostart_blocking.sh` and `~/.dwm/autostart.sh &` on startup |
 | [Static Status](https://dwm.suckless.org/patches/staticstatus/)  | allows the status text to be fixed to the bar on a specific monitor rather than being drawn on the focused monitor. Update `staticmonval` to select monitor |
-| [Restart Signal](https://dwm.suckless.org/patches/restartsig/) | adds a keyboard shortcut to restart dwm or alternatively by using kill -HUP dwmpid and additionally dwm can quit cleanly by using kill -TERM dwmpid |
+| [Restart Signal](https://dwm.suckless.org/patches/restartsig/) | adds a keyboard shortcut to restart dwm or alternatively by using `kill -HUP dwmpid` and additionally dwm can quit cleanly by using `kill -TERM dwmpid` |
 
 ## Appearance
 
 + Useless gap patch was modified to keep gaps and borders around tags with single clients
 + Applied tilegap patch and modified to match column layout spacing. Layouts are exactly the same until you increment the `nmaster` value.
-  + TODO: When nmaster is 0, add gappx to x and remove from width
-  + TODO: When nmaster > number of clients, add gappx to width
+  + TODO: When `nmaster` is 0, add `gappx` to x postion and remove from width
+  + TODO: When `nmaster` > number of clients, add `gappx` to width
 
 | Patch | Purpose |
 | ----- | ------- |
@@ -121,13 +121,13 @@ Few quirks to keep note off:
 
 
 ## Tag Management
-+ Client indicator patch has modified dimensions for visibility and added `showclientind` to config.def.h to turn on/off Client indicators patch
++ Client indicator patch has modified dimensions for visibility and added `showclientind` to config.def.h/config.h to turn on/off Client indicators patch
 
 | Patch | Purpose |
 | ----- | ------- |
 | [Alternative Tags](https://dwm.suckless.org/patches/alternativetags/) | adds alternative tags which can be toggled on the fly for the sole purpose of providing visual aid |
 | [Alternative Tags Decoration](https://dwm.suckless.org/patches/alttagsdecoration/) | provides the ability to use alternative text for tags which contain at least one window |
-| [Client Indicators*](https://dwm.suckless.org/patches/clientindicators/) | draws a dot indicator overlayed on each tag icon for each client, the selected client is drawn as a larger horizontal line<br> With client indicators ![](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-client-ind.png) <br> Without client indicators ![](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-no-client-ind.png) |
+| [Client Indicators*](https://dwm.suckless.org/patches/clientindicators/) | draws a dot indicator overlayed on each tag icon for each client, the selected client is drawn as a larger horizontal line<br> With client indicators: ![](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-client-ind.png) <br> Without client indicators: ![](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-no-client-ind.png) |
 | [Pertag](https://dwm.suckless.org/patches/pertag/) | adds nmaster, mfact, layouts and more per tag rather than per monitor |
 | [Switch to Tag](https://dwm.suckless.org/patches/switchtotag/)  | TODO: Fix for Multi monitor setup and cancel switching back (or some other patch is conflicting). Works well in a single monitor setup |
 | [Focus Urgent](https://dwm.suckless.org/patches/focusurgent/)  | TODO: find monitor with urgent client and focus there first |
@@ -150,7 +150,7 @@ Few quirks to keep note off:
 | Patch | Purpose |
 | ----- | ------- |
 | [Cycle Layouts](https://dwm.suckless.org/patches/cyclelayouts/) | lets you cycle through all your layouts |
-| [Attach Direction](https://dwm.suckless.org/patches/attachdirection/) | Single patch allowing attaching above, aside, below, bottom and top. To switch between the behaviors change the value of attachdirection in config. For default behavior leave it at 0 |
+| [Attach Direction](https://dwm.suckless.org/patches/attachdirection/) | Single patch allowing attaching above, aside, below, bottom and top. To switch between the behaviors change the value of `attachdirection` in config. For default behavior leave it at 0 |
 | [Always Center](https://dwm.suckless.org/patches/alwayscenter/) | All floating windows are centered, like the center patch, but without a rule. Some applications were spawning floating dialogs outside the monitor.   |
 | [Rotate Stack](https://dwm.suckless.org/patches/rotatestack/) | let's you rotate through the stack using keyboard shortcuts |
 
@@ -165,5 +165,5 @@ Few quirks to keep note off:
 | [DWM IPC (1.5.7)](https://github.com/mihirlad55/dwm-ipc) | implements inter-process communication through a UNIX socket for dwm | 
 
 ## Additional Customizations to Patches Above
-+ Some layouts add the value of `nmaster` to the layut tag (Similar to Monacle Count)
++ Some layouts add the value of `nmaster` to the layut tag (Similar to monocle Count)
 + Extra color schemes for use with slstatus
