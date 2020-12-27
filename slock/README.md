@@ -22,3 +22,9 @@ Afterwards enter the following command to build and install slock
 Running slock
 -------------
 Simply invoke the 'slock' command. To get out of it, enter your password.
+
+# Patches Applied
+
+| Patch | Purpose |
+| ----- | ------- |
+| [Blured or pixelated screenshot](https://tools.suckless.org/slock/patches/blur-pixelated-screen/) | This patch sets the lockscreen picture to a blured or pixelated screenshot. Inspired by i3lock-fancy |

@@ -1,6 +1,6 @@
 /* user and group to drop privileges to */
 static const char *user  = "nobody";
-static const char *group = "nogroup";
+static const char *group = "nobody";
 
 static const char *colorname[NUMCOLS] = {
 	[INIT] =   "black",     /* after initialization */
@@ -12,10 +12,10 @@ static const char *colorname[NUMCOLS] = {
 static const int failonclear = 1;
 
 /*Enable blur*/
-#define BLUR
+// #define BLUR
 /*Set blur radius*/
-static const int blurRadius=5;
+static const int blurRadius=60;
 /*Enable Pixelation*/
-//#define PIXELATION
+#define PIXELATION
 /*Set pixelation radius*/
-static const int pixelSize=0;
+static const int pixelSize=15;
