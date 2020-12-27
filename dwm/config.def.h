@@ -57,12 +57,12 @@ static const char *colors[][3]        = {
   [SchemeTagsNorm] = { col_offwhite,  col_lightgray, col_black }, // Tagbar left unselected {text,background,not used but cannot be empty}
   [SchemeInfoSel]  = { col_offwhite,  col_bg,        col_black }, // infobar middle  selected {text,background,not used but cannot be empty}
   [SchemeInfoNorm] = { col_lightgray, col_bg,        col_black }, // infobar middle  unselected {text,background,not used but cannot be empty}
-  [Scheme08]       = { col_red,       col_bg,        col_black }, 
-  [Scheme09]       = { col_green,     col_bg,        col_black }, 
-  [Scheme0A]       = { col_hotpink,   col_bg,        col_black }, 
-  [Scheme0B]       = { col_lightblue, col_bg,        col_black }, 
-  [Scheme0C]       = { col_blue,      col_bg,        col_black }, 
-  [Scheme0D]       = { col_offwhite,  col_bg,        col_black },
+  [Scheme08]       = { col_red,       col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x08 )
+  [Scheme09]       = { col_green,     col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x09 )
+  [Scheme0A]       = { col_hotpink,   col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0A )
+  [Scheme0B]       = { col_lightblue, col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0B )
+  [Scheme0C]       = { col_blue,      col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0C )
+  [Scheme0D]       = { col_offwhite,  col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0D )
 };
 static const unsigned int alphas[][3] = {
   /*               fg      bg        border     */
@@ -82,7 +82,7 @@ static const unsigned int alphas[][3] = {
 };
 
 /* staticstatus */
-static const int statmonval = 0;
+static const int statmonval = 0; /* Choose which monitor to draw status bar (if not using alt bar) */
 
 /* Tagging */
 /* Ensure your terminal/editor is also using the target font to see characters below */

@@ -56,12 +56,12 @@ static const char *colors[][3]        = {
   [SchemeTagsNorm] = { col_offwhite,  col_lightgray, col_black }, // Tagbar left unselected {text,background,not used but cannot be empty}
   [SchemeInfoSel]  = { col_offwhite,  col_bg,        col_black }, // infobar middle  selected {text,background,not used but cannot be empty}
   [SchemeInfoNorm] = { col_lightgray, col_bg,        col_black }, // infobar middle  unselected {text,background,not used but cannot be empty}
-  [Scheme08]       = { col_red,       col_bg,        col_black }, 
-  [Scheme09]       = { col_green,     col_bg,        col_black }, 
-  [Scheme0A]       = { col_hotpink,   col_bg,        col_black }, 
-  [Scheme0B]       = { col_lightblue, col_bg,        col_black }, 
-  [Scheme0C]       = { col_blue,      col_bg,        col_black }, 
-  [Scheme0D]       = { col_offwhite,  col_bg,        col_black },
+  [Scheme08]       = { col_red,       col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x08 )
+  [Scheme09]       = { col_green,     col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x09 )
+  [Scheme0A]       = { col_hotpink,   col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0A )
+  [Scheme0B]       = { col_lightblue, col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0B )
+  [Scheme0C]       = { col_blue,      col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0C )
+  [Scheme0D]       = { col_offwhite,  col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0D )
 };
 static const unsigned int alphas[][3] = {
   /*               fg      bg        border     */
@@ -82,7 +82,7 @@ static const unsigned int alphas[][3] = {
 };
 
 /* staticstatus */
-static const int statmonval = 0;
+static const int statmonval = 1; /* Choose which monitor to draw status bar (if not using alt bar) */
 
 /* Tagging */
 /* Ensure your terminal/editor is also using the target font to see characters below */
@@ -209,8 +209,10 @@ static Key keys[] = {
   { MODKEY,            XK_Prior,        focusmon,       {.i = -1 } },
   { MODKEY,            XK_Next,         focusmon,       {.i = +1 } },
   { MODKEY,            XK_Tab,          focusmon,       {.i = +1 } },
-  { MODKEY|ShiftMask,  XK_Prior,        tagmon,         {.i = -1 } },
-  { MODKEY|ShiftMask,  XK_Next,         tagmon,         {.i = +1 } },
+  { MODKEY|ShiftMask,  XK_Prior,        tagmon,         {.i = -1 } }, //delete
+  { MODKEY|ShiftMask,  XK_Next,         tagmon,         {.i = +1 } }, //delete
+  { MODKEY|ControlMask,XK_Left,         tagmon,         {.i = -1 } },
+  { MODKEY|ControlMask,XK_Right,        tagmon,         {.i = +1 } },
   { MODKEY,            XK_bracketright, cyclelayout,    {.i = -1 } },
   { MODKEY,            XK_bracketleft,  cyclelayout,    {.i = +1 } },
   { MODKEY,            XK_0,            view,           {.ui = ~0 } },
@@ -224,7 +226,7 @@ static Key keys[] = {
   { MODKEY,            XK_m,            setlayout,      {.v = &layouts[4]} },
   { MODKEY,            XK_f,            setlayout,      {.v = &layouts[5]} },
   { MODKEY,            XK_a,            setlayout,      {0} },
-  { MODKEY,            XK_Home,         zoom,           {0} },
+  { MODKEY,            XK_Home,         zoom,           {0} }, //delete
   { MODKEY,            XK_BackSpace,    zoom,           {0} },
   { MODKEY,            XK_b,            togglebar,      {0} },
   { MODKEY,            XK_q,            killclient,     {0} },
