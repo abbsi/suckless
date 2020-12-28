@@ -21,4 +21,4 @@ static const int blurRadius=60;
 /*Enable Pixelation*/
 #define PIXELATION
 /*Set pixelation radius*/
-static const int pixelSize=15;
+static const int pixelSize=40;
