@@ -12,10 +12,12 @@ Few quirks to keep note off:
   + You can also just delete that delete and the preceding if statement
   + Will look into dynamically pulling the current icon and adding nmaster value to it
 + Uses a good number of scripts that depend on rofi. So before building and running make sure you have it installed, along dmenu as a backup
-+ Tile layout gaps is a little broken in edge cases
-+ Other layouts don't have consistent gaps, will fix at some point
++ Tile layout gaps is a little broken in edge cases. In typical use, column and tile look the same until you change nmaster
++ Other layouts don't have consistent gaps, will fix later
 + Status bars deal with padding in different ways. You will need to adjust script outputs by adding/removing trailing spaces either in the config.h files (slstatus or dwmblocks) or in the script outputs
 + You can enable/disable layouts by commenting them out. However, in the key bindings section, reorder the lines and define the correct index.
++ Not sure if it's this DWM setup, or my system, using Ark to extract archives cause DWM to reset. Switched to another app
+
 
 ## Screen Shots
 
