@@ -121,6 +121,7 @@ static const Rule rules[] = {
   
   /* Any Monitor */
   { "Gpick",                      "gpick",                      NULL,              0,           0,            1,           -1  },
+  { "mpv",                        "gl",                         NULL,              0,           0,            1,           -1  },
   { "Nitrogen",                   "nitrogen",                   NULL,              0,           0,            1,           -1  },
   { "Galculator",                 "galculator",                 NULL,              0,           0,            1,           -1  },
   { "Pcmanfm",                    "pcmanfm",                    NULL,              0,           0,            1,           -1  },
