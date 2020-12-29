@@ -1,23 +1,38 @@
 # TODO
 + Re-expand `config.def.h` to the full setup without the application rules
 
-# DWM Build
+# Quick Installation Commands on Arch Linux (DWM with dmenu, slstatus, slock, tabbed)
 
-This is a heavily patched DWM 6.2 that suits how I like to work with it. Working with Arch Linux and package dependencies may vary. To help improve this setup, please post any issues mentioning any dependency failures.
+Install dependencies 
+```
+$ sudo pacman -Syu alacritty yajl picom nitrogen numlockx dunst
+$ yay -S libxft-bgra
+```
+Clone this repository
+```
+$ git clone https://github.com/abbsi/suckless.git
+```
+In the `dwm` directory
+  + Decide if you want yo use the existing `config.h` or start from the default `config.def.h`
+    + If from default, then delete config.h
+    + Set `static const int usealtbar = 0;` to `0`
+    + Double check that you have the required nerd-font or change to another nerd font
+    + Check that `static const int statmonval = 0;` is set to 0. Non zero value with a single monitor setup will crash DWM
+    + Choose your preffered attached method `static const int attachdirection = 3;`
+    + Enable/disable layouts, and ensure that the Key Maps have the right indices
+  + Edit `config.mk` to match your environment
+    + You can also add a custom name after `CUSTOMNAME` to setup multiple installations with different configurations
+  + Ensurek that all key mapped commands link to binaires or scprits in your path or replace commands with your own
 
-Few quirks to keep note off:
-* Make sure your text editor is using a nerd font to see the tag labels
-+ If you customize the layout labels (which use nerd font icon), then you may need to edit the icons in `dwm.c` in some of the layout functions where the nmaster value is printed
-  + Example: changing this `{ "  ", monocle },` in `config.h` will need you to change this line in `dwm.c` around line 1500: `snprintf(m->ltsymbol, sizeof m->ltsymbol, " %d", n);`
-  + You can also just delete that delete and the preceding if statement
-  + Will look into dynamically pulling the current icon and adding nmaster value to it
-+ Uses a good number of scripts that depend on rofi. So before building and running make sure you have it installed, along dmenu as a backup
-+ Tile layout gaps is a little broken in edge cases. In typical use, column and tile look the same until you change nmaster
-+ Other layouts don't have consistent gaps, will fix later
-+ Status bars deal with padding in different ways. You will need to adjust script outputs by adding/removing trailing spaces either in the config.h files (slstatus or dwmblocks) or in the script outputs
-+ You can enable/disable layouts by commenting them out. However, in the key bindings section, reorder the lines and define the correct index.
-+ Not sure if it's this DWM setup, or my system, using Ark to extract archives cause DWM to reset. Switched to another app
+```  
+sudo make clean install
+mkdir ~/.dwm
+cp autostart.sh ~/.dwm/ 
+```
 
+In each of these directories: `dmenu`, `slstatus`, `tabbed`, `slock` 
+    
+    sudo make clean install
 
 ## Screen Shots
 
@@ -33,7 +48,24 @@ Few quirks to keep note off:
 ### DWM with slstatus
 ![DWM with slstatus](https://raw.githubusercontent.com/abbsi/suckless/main/screenshots/dwm-with-slstatus.jpg)
 
-## Quick Guide
+# Notes
+
+This is a heavily patched DWM 6.2 that suits how I like to work with it. Tried it on two Arch Linux setups and working well. Your package dependencies may vary. To help improve this setup, please post any issues mentioning any dependency failures.
+
+Few quirks to keep note off:
+* Make sure your text editor is using a nerd font to see the tag labels
++ If you customize the layout labels (which use nerd font icon), then you may need to edit the icons in `dwm.c` in some of the layout functions where the nmaster value is printed
+  + Example: changing this `{ "  ", monocle },` in `config.h` will need you to change this line in `dwm.c` around line 1500: `snprintf(m->ltsymbol, sizeof m->ltsymbol, " %d", n);`
+  + You can also just delete that delete and the preceding if statement
+  + Will look into dynamically pulling the current icon and adding nmaster value to it
++ Uses a good number of scripts that depend on rofi. So before building and running make sure you have it installed, along dmenu as a backup
++ Tile layout gaps is a little broken in edge cases. In typical use, column and tile look the same until you change nmaster
++ Other layouts don't have consistent gaps, will fix later
++ Status bars deal with padding in different ways. You will need to adjust script outputs by adding/removing trailing spaces either in the config.h files (slstatus or dwmblocks) or in the script outputs
++ You can enable/disable layouts by commenting them out. However, in the key bindings section, reorder the lines and define the correct index.
++ Not sure if it's this DWM setup, or my system, using Ark to extract archives cause DWM to reset. Switched to another app
+
+## Detailed Guide [WIP]
 
 ### Dependencies
 #### config.def.h Dependencies (to be verified on a clean install)
@@ -41,7 +73,7 @@ Few quirks to keep note off:
 + libxft-bgra
 + For IPC Patch: yajl, jsoncpp
 + Nerd Fonts Complete and Source Code Pro font
-+ tabbed (not using, seems like when used with alacritty and fish shell, a memory leak occurs with fish eating up all RAM)
++ tabbed (seems like when used with alacritty and fish shell, a memory leak occurs with fish)
 + slock
 + [Alacritty Terminal](https://github.com/alacritty/alacritty)
 + [dmenu](https://tools.suckless.org/dmenu/)
@@ -67,22 +99,26 @@ Few quirks to keep note off:
    + Delete `config.h` If you want to start from `config.def.h`
    + Try to leave `config.def.h` intact unless you further patch DWM. If a patch modifies `config.h` then apply the change to `config.def.h`
 2. Choose if you want to use polybar or a DWM Bar
-   + Change `static const int usealtbar = 0;`. 1 to use polybar and 0 to use DWM's Bar
+   + Change `static const int usealtbar = 0;`. 
+     + 1 to use polybar 
+     + 0 to use DWM's Bar
    + If not using polybar, you will need to select a status bar in `autostart.sh`
    + I suggest you start with slstatus. Get that working then move on Polybar if needed. Polybar setup and configuration are in my dotfiles repository
-3. Compile and Install
+3. See my current [autostart.sh](https://github.com/abbsi/dotfiles/blob/main/.dwm/autostart.sh)
+   + Uses [xidlehook](https://github.com/jD91mZM2/xidlehook) to dim the screen after 5 minutes and then use `slock` to pixilate lock the screen 
+4. Compile and Install
    ```
    make clean
    make
    sudo make install
    ```
-4. Copy scripts into a directory in your PATH. Scripts can be found under 'bin' in my [dotfiles repository](https://github.com/abbsi/dotfiles/tree/main/bin)
-5. Check dwm.desktop went to the right place for you display manager to pick it up as an available sessions. e.g. `/usr/share/xsessions`
-6. Run DWM 
+5. Copy scripts into a directory in your PATH. Scripts can be found under 'bin' in my [dotfiles repository](https://github.com/abbsi/dotfiles/tree/main/bin)
+6. Check dwm.desktop went to the right place for you display manager to pick it up as an available sessions. e.g. `/usr/share/xsessions`
+7. Run DWM using startx (config your `.xinitrc`) or through your display manager
 
 ### Troubleshooting
 + When you first run dwm, you may see artifacts in the background as you open and close applications. Make sure you have picom installed and running through the `autostart.sh` or run it yourself from a terminal
-+ Use feh or nitrogen to setup a background
++ Use feh or nitrogen to setup a background. e.g. 
   + `feh --bg-scale /path/to/wallpaper.png`
 + ModKey+Shift+Q to quit DWM
 + You can edit the config.h, recompile and restart DWM without quiting through ModKey+Shift+R
@@ -137,7 +173,7 @@ Few quirks to keep note off:
 
 ## Layouts
 + TODO: Fix fibonacci layouts spacing
-+ TODO: Fix bstack stack client X and Width
++ TODO: Fix bstack stack client X postion and Width
 
 | Patch | Purpose |
 | ----- | ------- |
@@ -169,3 +205,4 @@ Few quirks to keep note off:
 ## Additional Customizations to Patches Above
 + Some layouts add the value of `nmaster` to the layut tag (Similar to monocle Count)
 + Extra color schemes for use with slstatus
+  
