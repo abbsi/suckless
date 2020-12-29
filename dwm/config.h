@@ -82,7 +82,10 @@ static const unsigned int alphas[][3] = {
 };
 
 /* staticstatus */
-static const int statmonval = 1; /* Choose which monitor to draw status bar (if not using alt bar) */
+/* Choose which monitor to draw status bar (if not using alt bar) */
+/* if set to non-zero (0) and only one monitor is active, DWM will crash with a segmentation fault */
+/* TODO: patch to check number of monitors and revert to 0 if monitor does not exist */
+static const int statmonval = 0; 
 
 /* Tagging */
 /* Ensure your terminal/editor is also using the target font to see characters below */
