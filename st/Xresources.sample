@@ -1,0 +1,28 @@
+! Place into ~/.Xresources
+! reload with following command before opening st
+!    xrdb ~/.Xresources
+
+!ST Resources
+st.font:           Hack:size=12
+st.n-black:        #131513
+st.n-red:          #f07178
+st.n-green:        #c3e88d
+st.n-yellow:       #ffd700
+st.n-blue:         #82aaff
+st.n-magenta:      #da70dd
+st.n-cyan:         #89ddff
+st.n-white:        #e0e0e0
+st.b-black:        #333533
+st.b-red:          #bd2c40
+st.b-green:        #22b660
+st.b-yellow:       #ffee00
+st.b-blue:         #005fd7
+st.b-magenta:      #df5ffd
+st.b-cyan:         #79edff
+st.b-white:        #ffffff
+st.bg:             #0F111A
+st.bgUnfocused:    #0F111A
+st.alpha:          0.99
+st.alphaUnfocused: 0.50
+st.cwscale:        1.07
+st.chscale:        1.0

@@ -6,7 +6,7 @@
  * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
  */
 static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-static int borderpx = 2;
+static int borderpx = 0;
 
 /*
  * What program is execed by st depends of these precedence rules:
@@ -106,7 +106,7 @@ char *termname = "st-256color";
 unsigned int tabspaces = 8;
 
 /* bg opacity */
-float alpha = 0.8, alphaUnfocused = 0.6;
+float alpha = 0.85, alphaUnfocused = 0.7;
 
 /* Terminal colors (16 first used in escape sequence) */
 static const char *colorname[] = {
@@ -133,10 +133,16 @@ static const char *colorname[] = {
 	[255] = 0,
 
 	/* more colors can be added after 255 to use with DefaultXX */
-	"#cccccc",
-	"#555555",
-	"#2e3440",
-	"black",
+	"#cccccc", // 256 defaultcs
+	"#555555", // 257 defaultrcs
+	"#2e3440", // 258
+	"white",   // 259
+	"gray",    // 260 selectionfg
+	"gray",    // 261 selectionbg
+	"black",   // 262 bg
+	"black",   // 263 bg unfocused
+	"black",   // 264 def bg
+	"white",   // 265 def fg
 };
 
 
@@ -144,19 +150,19 @@ static const char *colorname[] = {
  * Default colors (colorname index)
  * foreground, background, cursor, reverse cursor
  */
-unsigned int defaultfg = 7;
-unsigned int defaultbg = 0;
+unsigned int defaultfg = 265;
+unsigned int defaultbg = 264;
 static unsigned int defaultcs = 256;
-static unsigned int defaultrcs = 256;
+static unsigned int defaultrcs = 257;
 
 /* Colors used for selection */
-unsigned int selectionbg = 257;
-unsigned int selectionfg = 7;
+unsigned int selectionfg = 260;
+unsigned int selectionbg = 261;
 /* If 0 use selectionfg as foreground in order to have a uniform foreground-color */
 /* Else if 1 keep original foreground-color of each cell => more colors :) */
 static int ignoreselfg = 1;
 
-unsigned int bg = 17, bgUnfocused = 16;
+unsigned int bg = 262, bgUnfocused = 263;
 
 /*
  * https://invisible-island.net/xterm/ctlseqs/ctlseqs.html#h4-Functions-using-CSI-_-ordered-by-the-final-character-lparen-s-rparen:CSI-Ps-SP-q.1D81
@@ -171,7 +177,7 @@ unsigned int bg = 17, bgUnfocused = 16;
  * 7: Blinking st cursor
  * 8: Steady st cursor
  */
-static unsigned int cursorstyle = 1;
+static unsigned int cursorstyle = 5;
 static Rune stcursor = 0x2603; /* snowman (U+2603) */
 
 /*
@@ -205,36 +211,46 @@ static uint forcemousemod = ShiftMask;
  * Xresources preferences to load at startup
  */
 ResourcePref resources[] = {
-		{ "font",         STRING,  &font },
-		{ "color0",       STRING,  &colorname[0] },
-		{ "color1",       STRING,  &colorname[1] },
-		{ "color2",       STRING,  &colorname[2] },
-		{ "color3",       STRING,  &colorname[3] },
-		{ "color4",       STRING,  &colorname[4] },
-		{ "color5",       STRING,  &colorname[5] },
-		{ "color6",       STRING,  &colorname[6] },
-		{ "color7",       STRING,  &colorname[7] },
-		{ "color8",       STRING,  &colorname[8] },
-		{ "color9",       STRING,  &colorname[9] },
-		{ "color10",      STRING,  &colorname[10] },
-		{ "color11",      STRING,  &colorname[11] },
-		{ "color12",      STRING,  &colorname[12] },
-		{ "color13",      STRING,  &colorname[13] },
-		{ "color14",      STRING,  &colorname[14] },
-		{ "color15",      STRING,  &colorname[15] },
-		{ "background",   STRING,  &colorname[256] },
-		{ "foreground",   STRING,  &colorname[257] },
-		{ "cursorColor",  STRING,  &colorname[258] },
-		{ "termname",     STRING,  &termname },
-		{ "shell",        STRING,  &shell },
-		{ "minlatency",   INTEGER, &minlatency },
-		{ "maxlatency",   INTEGER, &maxlatency },
-		{ "blinktimeout", INTEGER, &blinktimeout },
-		{ "bellvolume",   INTEGER, &bellvolume },
-		{ "tabspaces",    INTEGER, &tabspaces },
-		{ "borderpx",     INTEGER, &borderpx },
-		{ "cwscale",      FLOAT,   &cwscale },
-		{ "chscale",      FLOAT,   &chscale },
+		{ "font",               STRING,  &font },
+		{ "n-black",            STRING,  &colorname[0] },
+		{ "n-red",              STRING,  &colorname[1] },
+		{ "n-green",            STRING,  &colorname[2] },
+		{ "n-yellow",           STRING,  &colorname[3] },
+		{ "n-blue",             STRING,  &colorname[4] },
+		{ "n-magenta",          STRING,  &colorname[5] },
+		{ "n-cyan",             STRING,  &colorname[6] },
+		{ "n-white",            STRING,  &colorname[7] },
+		{ "b-black",            STRING,  &colorname[8] },
+		{ "b-red",              STRING,  &colorname[9] },
+		{ "b-green",            STRING,  &colorname[10] },
+		{ "b-yellow",           STRING,  &colorname[11] },
+		{ "b-blue",             STRING,  &colorname[12] },
+		{ "b-magenta",          STRING,  &colorname[13] },
+		{ "b-cyan",             STRING,  &colorname[14] },
+		{ "b-white",            STRING,  &colorname[15] },
+		{ "defaultcs",          STRING,  &colorname[256] },
+		{ "defaultrcs",         STRING,  &colorname[257] },
+		{ "spare01",            STRING,  &colorname[258] },
+		{ "spare02",            STRING,  &colorname[259] },
+		{ "selectionfg",        STRING,  &colorname[260] },
+		{ "selectionbg",        STRING,  &colorname[261] },
+		{ "bg",                 STRING,  &colorname[262] },
+		{ "bgUnfocused",        STRING,  &colorname[263] },
+		{ "defbg",              STRING,  &colorname[263] },
+		{ "deffg",              STRING,  &colorname[264] },
+		{ "termname",           STRING,  &termname },
+		{ "shell",              STRING,  &shell },
+		{ "minlatency",         INTEGER, &minlatency },
+		{ "maxlatency",         INTEGER, &maxlatency },
+		{ "blinktimeout",       INTEGER, &blinktimeout },
+		{ "bellvolume",         INTEGER, &bellvolume },
+		{ "tabspaces",          INTEGER, &tabspaces },
+		{ "borderpx",           INTEGER, &borderpx },
+		{ "cursortyle",         INTEGER, &cursorstyle },
+		{ "cwscale",            FLOAT,   &cwscale },
+		{ "chscale",            FLOAT,   &chscale },
+		{ "alpha",              FLOAT,   &alpha },
+		{ "alphaUnfocused",     FLOAT,   &alphaUnfocused },
 };
 
 /*
@@ -350,7 +366,7 @@ static Key key[] = {
 	{ XK_KP_Delete,     ControlMask,    "\033[3;5~",    +1,    0},
 	{ XK_KP_Delete,     ShiftMask,      "\033[2K",      -1,    0},
 	{ XK_KP_Delete,     ShiftMask,      "\033[3;2~",    +1,    0},
-	{ XK_KP_Delete,     XK_ANY_MOD,     "\033[3~",       -1,    0},
+	{ XK_KP_Delete,     XK_ANY_MOD,     "\033[3~",      -1,    0},
 	{ XK_KP_Delete,     XK_ANY_MOD,     "\033[3~",      +1,    0},
 	{ XK_KP_Multiply,   XK_ANY_MOD,     "\033Oj",       +2,    0},
 	{ XK_KP_Add,        XK_ANY_MOD,     "\033Ok",       +2,    0},
