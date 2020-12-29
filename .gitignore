@@ -1,6 +1,8 @@
 !.gitignore
 
 *.o
+*.orig
+*.rej
 /dwm/dwm
 /dwm/dwm-msg
 /dmenu/dmenu
