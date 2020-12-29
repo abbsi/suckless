@@ -1,7 +1,7 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=Dwm
+Name=DwmCUSTOMNAME
 Comment=Dynamic window manager
-Exec=dwm
+Exec=dwmCUSTOMNAME
 Icon=dwm
 Type=XSession

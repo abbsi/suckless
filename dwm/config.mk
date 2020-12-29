@@ -3,9 +3,13 @@ VERSION = 6.2
 
 # Customize below to fit your system
 
+#append a custom name to the DWM binary for multiple installations
+CUSTOMNAME = 
+
 # paths
 PREFIX = /usr/local
 MANPREFIX = ${PREFIX}/share/man
+XSESSIONSDIR = /usr/share/xsessions
 
 X11INC = /usr/X11R6/include
 X11LIB = /usr/X11R6/lib

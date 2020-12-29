@@ -29,31 +29,26 @@ dwm: ${OBJ}
 	${CC} -o $@ ${OBJ} ${LDFLAGS}
 
 clean:
-	rm -f dwm dwm-msg dwm-msg.o ${OBJ} dwm-${VERSION}.tar.gz
-
-dist: clean
-	mkdir -p dwm-${VERSION}
-	cp -R LICENSE Makefile README config.def.h config.mk\
-		dwm.1 drw.h util.h ${SRC} dwm.png transient.c dwm-${VERSION}
-	tar -cf dwm-${VERSION}.tar dwm-${VERSION}
-	gzip dwm-${VERSION}.tar
-	rm -rf dwm-${VERSION}
+	rm -f dwm${CUSTOMNAME} dwm-msg dwm-msg.o ${OBJ} dwm${CUSTOMNAME}-${VERSION}.tar.gz
 
 install: all
 	mkdir -p ${DESTDIR}${PREFIX}/bin
-	cp -f dwm dwm-msg ${DESTDIR}${PREFIX}/bin
-	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm
+	cp -f dwm ${DESTDIR}${PREFIX}/bin/dwm${CUSTOMNAME}
+	cp -f dwm-msg ${DESTDIR}${PREFIX}/bin
+	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm${CUSTOMNAME}
 	chmod 755 ${DESTDIR}${PREFIX}/bin/dwm-msg
 	mkdir -p ${DESTDIR}${MANPREFIX}/man1
-	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm.1
-	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm.1
-	mkdir -p ${DESTDIR}${PREFIX}/share/xsessions
-	cp -f dwm.desktop ${DESTDIR}${PREFIX}/share/xsessions
-	chmod 644 ${DESTDIR}${PREFIX}/share/xsessions/dwm.desktop
+	sed "s/VERSION/${VERSION}/g" < dwm.1 > ${DESTDIR}${MANPREFIX}/man1/dwm${CUSTOMNAME}.1
+	chmod 644 ${DESTDIR}${MANPREFIX}/man1/dwm${CUSTOMNAME}.1
+	mkdir -p ${XSESSIONSDIR}
+	sed "s/CUSTOMNAME/${CUSTOMNAME}/g" < dwm.desktop > ${XSESSIONSDIR}/dwm${CUSTOMNAME}.desktop
+	#cp -f dwm.desktop ${XSESSIONSDIR}/dwm${CUSTOMNAME}.desktop
+	chmod 644 ${XSESSIONSDIR}/dwm${CUSTOMNAME}.desktop
 
 uninstall:
-	rm -f ${DESTDIR}${PREFIX}/bin/dwm\
-		${DESTDIR}${MANPREFIX}/man1/dwm.1\
-		${DESTDIR}${PREFIX}/share/xsessions/dwm.desktop
+	rm -f ${DESTDIR}${PREFIX}/bin/dwm${CUSTOMNAME}\
+	  ${DESTDIR}${PREFIX}/bin/dwm-msg\
+		${DESTDIR}${MANPREFIX}/man1/dwm${CUSTOMNAME}.1\
+		${XSESSIONSDIR}/dwm${CUSTOMNAME}.desktop
 
-.PHONY: all options clean dist install uninstall
+.PHONY: all options clean install uninstall
