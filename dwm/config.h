@@ -1,9 +1,4 @@
 // See LICENSE file for copyright and license details.
-// Orginally forked from http://www.gitlab.com/dwt1/ 
-// Visit http://www.youtube.com/c/DistroTube
-
-// All scripts/programs must be in your PATH
-
 #include <X11/XF86keysym.h>
 
 /* Appearance */
@@ -26,7 +21,16 @@ static const char *altbarcmd       = "launch-polybar"; /* Alternate bar launch c
 static const char *fonts[]         = {
     "Anonymice Nerd Font:size=16:antialias=true:autohint=true",
     "Hack:size=10:antialias=true:autohint=true",
-    "JoyPixels:size=12:antialias=true:autohint=true" };
+    "JoyPixels:size=12:antialias=true:autohint=true"
+};
+
+static const char dmenufont[]     = "monospace:size=12";
+
+static const char col_gray1[]     = "#222222";
+static const char col_gray2[]     = "#444444";
+static const char col_gray3[]     = "#bbbbbb";
+static const char col_gray4[]     = "#eeeeee";
+static const char col_cyan[]      = "#005577";
 
 /* Custom Colors */ 
 static const char col_bg[]        = "#222222";
@@ -51,7 +55,7 @@ static const char *colors[][3]        = {
   /*                    fg            bg            border   */
   [SchemeNorm]     = { col_offwhite,  col_bg,        col_darkgray },
   [SchemeSel]      = { col_orange,    col_bg,        col_offwhite },
-  [SchemeStatus]   = { col_offwhite,  col_bg,        col_black }, // Statusbar Tright {text,background,not used but cannot be empty}
+  [SchemeStatus]   = { col_offwhite,  col_bg,        col_black }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeTagsSel]  = { col_offwhite,  col_bluegray,  col_black }, // Tagbar left selected {text,background,not used but cannot be empty}
   [SchemeTagsNorm] = { col_offwhite,  col_lightgray, col_black }, // Tagbar left unselected {text,background,not used but cannot be empty}
   [SchemeInfoSel]  = { col_offwhite,  col_bg,        col_black }, // infobar middle  selected {text,background,not used but cannot be empty}
@@ -64,7 +68,7 @@ static const char *colors[][3]        = {
   [Scheme0D]       = { col_offwhite,  col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0D )
 };
 static const unsigned int alphas[][3] = {
-  /*               fg      bg        border     */
+/*                   fg       bg        border     */
   [SchemeNorm]     = { OPAQUE, baralpha, borderalpha },
   [SchemeSel]      = { OPAQUE, baralpha, borderalpha },
   [SchemeStatus]   = { OPAQUE, baralpha, borderalpha },
@@ -78,7 +82,6 @@ static const unsigned int alphas[][3] = {
   [Scheme0B]       = { OPAQUE, baralpha, borderalpha },
   [Scheme0C]       = { OPAQUE, baralpha, borderalpha },
   [Scheme0D]       = { OPAQUE, baralpha, borderalpha },
-
 };
 
 /* staticstatus */
@@ -93,17 +96,15 @@ static const int statmonval = 0;
 // "","","","聆","","","","",""
 // "","","","","","","","",""
 // "1","2","3","4","5","6","7","8","9"
-static const char *tags[] = {"祿","祿","祿","祿","祿","祿","祿","祿","祿"};      // Tags shown when empty
-static const char *alttags[] = {"綠","綠","綠","綠","綠","綠","綠","綠",""};   // Tags shown when window is spawned
-static const char *tagsalt[] = { "","","","","","","","","" }; // Alternative tags to show using key bind
+static const char *tags[] =    {"祿","祿","祿","祿","祿","祿","祿","祿","祿"}; // Tags shown when empty
+static const char *alttags[] = {"綠","綠","綠","綠","綠","綠","綠","綠",""}; // Tags shown when window is spawned
+static const char *tagsalt[] = {"","","","","","","","",""}; // Alternative tags to show using key bind
 
 static const Rule rules[] = {
   /* xprop(1):
    * WM_CLASS(STRING) = instance, class
    * WM_NAME(STRING) = title
-   * Left = 2
-   * Main = 0
-   * Right = 1
+   * Monitors: Left = 2; Main = 0; Right = 1
    */
   /* class                        instance                       title              tags mask    swithtotag   isfloating   monitor */
   /* Left Monitor */
@@ -150,13 +151,14 @@ static const Layout layouts[] = {
   { "  ",      dwindle },
   { "  ",      monocle },
   { "  ",      NULL },    /* no layout function means floating behavior */
-//{ "  ",      grid },
-//{ "  ",      spiral },
-//{ "充  ",      bstackhoriz },
+  { "  ",      grid },
+  { "  ",      spiral },
+  { "充  ",      bstackhoriz },
   { NULL,       NULL },
 };
 
 /* key definitions */
+/* #define MODKEY Mod1Mask */ /* Uncomment to use Alt as modkey */
 #define MODKEY Mod4Mask
 #define TAGKEYS(KEY,TAG) \
   { MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
@@ -169,90 +171,88 @@ static const Layout layouts[] = {
 /* Commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[]     = { "dmenu_run", "-g", "3", "-l", "20", "-fn", "Source Code Pro:pixelsize=20", "-p", "Run: ", NULL };
-
+static const char *termcmd[]  = { "alacritty", NULL };
 static Key keys[] = {
-  { MODKEY,               XK_space,    spawn, CMD("m-drun") },
-  { MODKEY,               XK_x,        spawn, CMD("m-run") },
-  { MODKEY,               XK_w,        spawn, CMD("m-window") },
-  { MODKEY|ShiftMask,     XK_Return,   spawn, {.v = dmenucmd } },
-  { MODKEY,               XK_Return,   spawn, CMD("alacritty") },
-  { Mod1Mask,             XK_Return,   spawn, CMD("tabbed-term") },
-  { ControlMask,          XK_Print,    spawn, CMD("sleep 0.25s; shot") },
-  { ShiftMask,            XK_Print,    spawn, CMD("sleep 0.25s; shot focused") },
-  { 0,                    XK_Print,    spawn, CMD("sleep 0.25s; shot select") },
-  { MODKEY,               XK_Print,    spawn, CMD("m-scrot") },
-  { MODKEY,               XK_l,        spawn, CMD("slock") },
-  { MODKEY,               XK_o,        spawn, CMD("m-quick-cmd") },
-  { Mod1Mask|ControlMask, XK_e,        spawn, CMD("m-edit-configs") },
-  { Mod1Mask|ControlMask, XK_m,        spawn, CMD("m-sysmon") },
-  { Mod1Mask|ControlMask, XK_s,        spawn, CMD("m-todo2") },
-  { Mod1Mask|ControlMask, XK_t,        spawn, CMD("m-todo") },
-  { Mod1Mask|ControlMask, XK_n,        spawn, CMD("m-notifications") },
-  { Mod1Mask|ControlMask, XK_f,        spawn, CMD("m-fm") },
-  { Mod1Mask|ControlMask, XK_h,        spawn, CMD("alacritty -e bpytop") },
-  { 0, XF86XK_AudioRaiseVolume,        spawn, CMD("pavolume volup --quiet") },
-  { 0, XF86XK_Launch8,                 spawn, CMD("pavolume volup --quiet") },
-  { 0, XF86XK_AudioLowerVolume,        spawn, CMD("pavolume voldown --quiet") },
-  { 0, XF86XK_Launch7,                 spawn, CMD("pavolume voldown --quiet") },
-  { 0, XF86XK_AudioMute,               spawn, CMD("pavolume mutetoggle --quiet") },
-  { 0, XF86XK_AudioPlay,               spawn, CMD("playerctl play-pause" )},
-  { 0, XF86XK_AudioStop,               spawn, CMD("playerctl stop" )},
-  { 0, XF86XK_AudioPrev,               spawn, CMD("playerctl previous" )},
-  { 0, XF86XK_AudioNext,               spawn, CMD("playerctl next" )},
 
-  /* Custom Key Maps */
-  { MODKEY|ShiftMask,  XK_Up,           rotatestack,    {.i = -1 } },
-  { MODKEY|ShiftMask,  XK_Down,         rotatestack,    {.i = +1 } },
-  { MODKEY|ShiftMask,  XK_Left,         rotatestack,    {.i = -1 } },
-  { MODKEY|ShiftMask,  XK_Right,        rotatestack,    {.i = +1 } },
-  { MODKEY,            XK_Up,           focusstack,     {.i = -1 } }, 
-  { MODKEY,            XK_Down,         focusstack,     {.i = +1 } }, 
-  { Mod1Mask,          XK_Tab,          focusstack,     {.i = +1 } }, 
-  { MODKEY,            XK_Left,         setmfact,       {.f = -0.01} }, 
-  { MODKEY,            XK_Right,        setmfact,       {.f = +0.01} },
-  { MODKEY,            XK_Prior,        focusmon,       {.i = -1 } },
-  { MODKEY,            XK_Next,         focusmon,       {.i = +1 } },
-  { MODKEY,            XK_Tab,          focusmon,       {.i = +1 } },
-  { MODKEY|ShiftMask,  XK_Prior,        tagmon,         {.i = -1 } }, //delete
-  { MODKEY|ShiftMask,  XK_Next,         tagmon,         {.i = +1 } }, //delete
-  { MODKEY|ControlMask,XK_Left,         tagmon,         {.i = -1 } },
-  { MODKEY|ControlMask,XK_Right,        tagmon,         {.i = +1 } },
-  { MODKEY,            XK_bracketright, cyclelayout,    {.i = -1 } },
-  { MODKEY,            XK_bracketleft,  cyclelayout,    {.i = +1 } },
-  { MODKEY,            XK_0,            view,           {.ui = ~0 } },
-  { MODKEY|ShiftMask,  XK_0,            tag,            {.ui = ~0 } },
-  { MODKEY,            XK_comma,        incnmaster,     {.i = -1 } },
-  { MODKEY,            XK_period,       incnmaster,     {.i = +1 } },
-  { MODKEY,            XK_c,            setlayout,      {.v = &layouts[0]} }, 
-  { MODKEY,            XK_t,            setlayout,      {.v = &layouts[1]} },
-  { MODKEY,            XK_h,            setlayout,      {.v = &layouts[2]} },
-  { MODKEY,            XK_d,            setlayout,      {.v = &layouts[3]} },
-  { MODKEY,            XK_m,            setlayout,      {.v = &layouts[4]} },
-  { MODKEY,            XK_f,            setlayout,      {.v = &layouts[5]} },
-  { MODKEY,            XK_a,            setlayout,      {0} },
-  { MODKEY,            XK_Home,         zoom,           {0} }, //delete
-  { MODKEY,            XK_BackSpace,    zoom,           {0} },
-  { MODKEY,            XK_b,            togglebar,      {0} },
-  { MODKEY,            XK_q,            killclient,     {0} },
-  { MODKEY|ShiftMask,  XK_space,        togglefloating, {0} },
-  { MODKEY,            XK_n,            togglealttag,   {0} },
-  { MODKEY,            XK_u,            focusurgent,    {0} },
-  { MODKEY,            XK_r,            reorganizetags, {0} },
-  //{ MODKEY,            XK_g,            setlayout,      {.v = &layouts[6]} },
-  //{ MODKEY,            XK_s,            setlayout,      {.v = &layouts[7]} },
-  //{ MODKEY,            XK_u,            setlayout,      {.v = &layouts[8]} }, 
+  /* Core Functions */
+  { MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+  { MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+  { MODKEY,                       XK_b,      togglebar,      {0} },
+  { MODKEY,                       XK_Up,     focusstack,     {.i = -1 } }, 
+  { MODKEY,                       XK_Down,   focusstack,     {.i = +1 } }, 
+  { MODKEY,                       XK_comma,  incnmaster,     {.i = -1 } },
+  { MODKEY,                       XK_period, incnmaster,     {.i = +1 } },
+  { MODKEY,                       XK_Left,   setmfact,       {.f = -0.01} }, 
+  { MODKEY,                       XK_Right,  setmfact,       {.f = +0.01} },
+  { MODKEY,                       XK_Return, zoom,           {0} },
+  { MODKEY,                       XK_Tab,    view,           {0} },
+  { MODKEY,                       XK_q,      killclient,     {0} },
+  { MODKEY,                       XK_a,      setlayout,      {0} },
+  { MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+  { MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+  { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+  { MODKEY,                       XK_Prior,  focusmon,       {.i = -1 } },
+  { MODKEY,                       XK_Next,   focusmon,       {.i = +1 } },
+  { MODKEY|ControlMask,           XK_Prior,  tagmon,         {.i = -1 } },
+  { MODKEY|ControlMask,           XK_Next,   tagmon,         {.i = +1 } },
+  TAGKEYS(                        XK_1,                      0)
+  TAGKEYS(                        XK_2,                      1)
+  TAGKEYS(                        XK_3,                      2)
+  TAGKEYS(                        XK_4,                      3)
+  TAGKEYS(                        XK_5,                      4)
+  TAGKEYS(                        XK_6,                      5)
+  TAGKEYS(                        XK_7,                      6)
+  TAGKEYS(                        XK_8,                      7)
+  TAGKEYS(                        XK_9,                      8)
+  { MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+
+  /* Layouts */
+  { MODKEY,                       XK_c,      setlayout,      {.v = &layouts[0]} }, 
+  { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[1]} },
+  { MODKEY,                       XK_h,      setlayout,      {.v = &layouts[2]} },
+  { MODKEY,                       XK_d,      setlayout,      {.v = &layouts[3]} },
+  { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[4]} },
+  { MODKEY,                       XK_f,      setlayout,      {.v = &layouts[5]} },
+  { MODKEY,                       XK_g,      setlayout,      {.v = &layouts[6]} },
+  { MODKEY,                       XK_s,      setlayout,      {.v = &layouts[7]} },
+  { MODKEY,                       XK_u,      setlayout,      {.v = &layouts[8]} }, 
   
-  TAGKEYS(                  XK_1,          0)
-  TAGKEYS(                  XK_2,          1)
-  TAGKEYS(                  XK_3,          2)
-  TAGKEYS(                  XK_4,          3)
-  TAGKEYS(                  XK_5,          4)
-  TAGKEYS(                  XK_6,          5)
-  TAGKEYS(                  XK_7,          6)
-  TAGKEYS(                  XK_8,          7)
-  TAGKEYS(                  XK_9,          8)
-  { MODKEY|ShiftMask,       XK_q,          quit,      {0} },
-  { MODKEY|ShiftMask,       XK_r,          quit,      {1} }, 
+  /* Patch Key Bindings */
+  { MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} }, 
+  { MODKEY|ShiftMask,             XK_Up,     rotatestack,    {.i = -1 } },
+  { MODKEY|ShiftMask,             XK_Down,   rotatestack,    {.i = +1 } },
+  { MODKEY|ControlMask,		        XK_comma,  cyclelayout,    {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
+  { MODKEY,                       XK_n,      togglealttag,   {0} },
+  { MODKEY,                       XK_r,      reorganizetags, {0} },
+  { MODKEY,                       XK_u,      focusurgent,    {0} },
+  
+  /* Custom Commands */
+  { MODKEY,                       XK_space,  spawn,          CMD("m-drun") },
+  { MODKEY,                       XK_x,      spawn,          CMD("m-run") },
+  { MODKEY,                       XK_w,      spawn,          CMD("m-window") },
+  { ControlMask,                  XK_Print,  spawn,          CMD("sleep 0.25s; shot") },
+  { ShiftMask,                    XK_Print,  spawn,          CMD("sleep 0.25s; shot focused") },
+  { 0,                            XK_Print,  spawn,          CMD("sleep 0.25s; shot select") },
+  { MODKEY,                       XK_Print,  spawn,          CMD("m-scrot") },
+  { MODKEY,                       XK_l,      spawn,          CMD("slock") },
+  { MODKEY,                       XK_o,      spawn,          CMD("m-quick-cmd") },
+  { Mod1Mask|ControlMask,         XK_e,      spawn,          CMD("m-edit-configs") },
+  { Mod1Mask|ControlMask,         XK_m,      spawn,          CMD("m-sysmon") },
+  { Mod1Mask|ControlMask,         XK_s,      spawn,          CMD("m-todo2") },
+  { Mod1Mask|ControlMask,         XK_t,      spawn,          CMD("m-todo") },
+  { Mod1Mask|ControlMask,         XK_n,      spawn,          CMD("m-notifications") },
+  { Mod1Mask|ControlMask,         XK_f,      spawn,          CMD("m-fm") },
+  { Mod1Mask|ControlMask,         XK_h,      spawn,          CMD("alacritty -e bpytop") },
+  { 0, XF86XK_AudioRaiseVolume,              spawn,          CMD("amixer set Master 1%+") },
+  { 0, XF86XK_Launch8,                       spawn,          CMD("amixer set Master 1%+") },
+  { 0, XF86XK_AudioLowerVolume,              spawn,          CMD("amixer set Master 1%-") },
+  { 0, XF86XK_Launch7,                       spawn,          CMD("amixer set Master 1%-") },
+  { 0, XF86XK_AudioMute,                     spawn,          CMD("amixer set Master toggle") },
+  { 0, XF86XK_AudioPlay,                     spawn,          CMD("playerctl play-pause" )},
+  { 0, XF86XK_AudioStop,                     spawn,          CMD("playerctl stop" )},
+  { 0, XF86XK_AudioPrev,                     spawn,          CMD("playerctl previous" )},
+  { 0, XF86XK_AudioNext,                     spawn,          CMD("playerctl next" )},
 };
 
 /* button definitions */
