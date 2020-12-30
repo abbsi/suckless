@@ -1,20 +1,15 @@
 // See LICENSE file for copyright and license details.
-// Orginally forked from http://www.gitlab.com/dwt1/ 
-// Visit http://www.youtube.com/c/DistroTube
-
-// All scripts/programs must be in your PATH
-
 #include <X11/XF86keysym.h>
 
 /* Appearance */
-static const unsigned int borderpx = 3;              /* border pixel of windows */
-static const unsigned int snap     = 30;             /* snap pixel */
+static const unsigned int borderpx = 1;              /* border pixel of windows */
+static const unsigned int snap     = 32;             /* snap pixel */
 static const unsigned int gappx    = 12;             /* pixel gap between clients */
 static const int showbar           = 1;              /* 0 means no bar */
 static const int topbar            = 1;              /* 0 means bottom bar */
 static const int horizpadbar       = 10;             /* horizontal padding for statusbar */
 static const int vertpadbar        = 15;             /* vertical padding for statusbar */
-static const int showclientind     = 1;              /* 1 means show client indicators on tag */
+static const int showclientind     = 0;              /* 1 means show client indicators on tag */
 
 /* Alternative Bars */
 static const int usealtbar         = 0;              /* 1 means use non-dwm status bar */
@@ -23,11 +18,19 @@ static const char *alttrayname     = "tray";         /* Polybar tray instance na
 static const char *altbarcmd       = "polybar-open"; /* Alternate bar launch command */
 
 /* Fonts */
-static const char *fonts[]         = {
-    "Anonymice Nerd Font:size=16:antialias=true:autohint=true",
-    "Hack:size=16:antialias=true:autohint=true",
-    "JoyPixels:size=14:antialias=true:autohint=true" };
+static const char *fonts[]         = { 
+    "monospace:size=12:antialias=true:autohint=true",
+    "Hack:size=12:antialias=true:autohint=true",
+    "JoyPixels:size=12:antialias=true:autohint=true"
+};
 
+static const char dmenufont[]     = "monospace:size=12";
+
+static const char col_gray1[]     = "#222222";
+static const char col_gray2[]     = "#444444";
+static const char col_gray3[]     = "#bbbbbb";
+static const char col_gray4[]     = "#eeeeee";
+static const char col_cyan[]      = "#005577";
 
 /* Custom Colors */ 
 static const char col_bg[]        = "#222222";
@@ -45,14 +48,14 @@ static const char col_yellow[]    = "#ffff00";
 static const char col_white[]     = "#ffffff";
 static const char col_green[]     = "#009900"; 
 
-/* Bar opacity ; 0xff is no transparency. Play with the value to get desired transparency. */
+/* Bar opacity ; 0xff is no transparency. Change value to get desired transparency. */
 static const unsigned int baralpha    = 0xdd; 
 static const unsigned int borderalpha = OPAQUE;
 static const char *colors[][3]        = {
   /*                    fg            bg            border   */
   [SchemeNorm]     = { col_offwhite,  col_bg,        col_darkgray },
   [SchemeSel]      = { col_orange,    col_bg,        col_offwhite },
-  [SchemeStatus]   = { col_offwhite,  col_bg,        col_black }, // Statusbar Tright {text,background,not used but cannot be empty}
+  [SchemeStatus]   = { col_offwhite,  col_bg,        col_black }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeTagsSel]  = { col_offwhite,  col_bluegray,  col_black }, // Tagbar left selected {text,background,not used but cannot be empty}
   [SchemeTagsNorm] = { col_offwhite,  col_lightgray, col_black }, // Tagbar left unselected {text,background,not used but cannot be empty}
   [SchemeInfoSel]  = { col_offwhite,  col_bg,        col_black }, // infobar middle  selected {text,background,not used but cannot be empty}
@@ -65,7 +68,7 @@ static const char *colors[][3]        = {
   [Scheme0D]       = { col_offwhite,  col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0D )
 };
 static const unsigned int alphas[][3] = {
-  /*               fg      bg        border     */
+  /*                   fg       bg        border     */
   [SchemeNorm]     = { OPAQUE, baralpha, borderalpha },
   [SchemeSel]      = { OPAQUE, baralpha, borderalpha },
   [SchemeStatus]   = { OPAQUE, baralpha, borderalpha },
@@ -82,6 +85,9 @@ static const unsigned int alphas[][3] = {
 };
 
 /* staticstatus */
+/* Choose which monitor to draw status bar (if not using alt bar) */
+/* if set to non-zero (0) and only one monitor is active, DWM will crash with a segmentation fault */
+/* TODO: patch to check number of monitors and revert to 0 if monitor does not exist */
 static const int statmonval = 0; /* Choose which monitor to draw status bar (if not using alt bar) */
 
 /* Tagging */
@@ -90,9 +96,11 @@ static const int statmonval = 0; /* Choose which monitor to draw status bar (if 
 // "","","","聆","","","","",""
 // "","","","","","","","",""
 // "1","2","3","4","5","6","7","8","9"
-static const char *tags[] = {"祿","祿","祿","祿","祿","祿","祿","祿","祿"};      // Tags shown when empty
-static const char *alttags[] = {"綠","綠","綠","綠","綠","綠","綠","綠",""};   // Tags shown when window is spawned
-static const char *tagsalt[] = { "","","","","","","","","" }; // Alternative tags to show using key bind
+// "祿","祿","祿","祿","祿","祿","祿","祿","祿"
+// "綠","綠","綠","綠","綠","綠","綠","綠",""
+static const char *tags[] =    {"1","2","3","4","5","6","7","8","9"}; // Tags shown when empty
+static const char *alttags[] = {"<1>","<2>","<3>","<4>","<5>","<6>","<7>","<8>","<9>"}; // Tags shown when window is spawned
+static const char *tagsalt[] = {"A","B","C","D","E","F","G","H","I"}; // Alternative tags to show using key bind
 
 static const Rule rules[] = {
   /* xprop(1):
@@ -107,27 +115,28 @@ static const Rule rules[] = {
 static const float mfact     = 0.60;  /* factor of master area size [0.05..0.95] */
 static const int nmaster     = 1;     /* number of clients in master area */
 static const int resizehints = 1;     /* 1 means respect size hints in tiled resizals */
-static const int decorhints  = 1;     /* 1 means respect decoration hints */
+static const int decorhints  = 0;     /* 1 means respect decoration hints */
 
 /* 0 default, 1 above, 2 aside, 3 below, 4 bottom, 5 top */
-static const int attachdirection = 3;
+static const int attachdirection = 0;
 
 static const Layout layouts[] = {
   /* symbol     arrange function */
-  { "  ",      col },     /* first entry is default */
-  { "ﳶ  ",      bstack },     
-  { "  ",      monocle },
-  { "  ",      dwindle },
+  { "舘  ",      tile },    /* first entry is default */ 
   { "  ",      NULL },    /* no layout function means floating behavior */
-  { "舘  ",      tile },    
+  { "  ",      monocle },
+  { "  ",      col },     
   { "  ",      grid },
-  { "  ",      spiral },
+  { "ﳶ  ",      bstack },     
   { "充  ",      bstackhoriz },
+  { "  ",      spiral },
+  { "  ",      dwindle },
   { NULL,       NULL },
 };
 
 /* key definitions */
-#define MODKEY Mod4Mask
+/* #define MODKEY Mod1Mask */ /* Uncomment to use Alt as modkey */
+#define MODKEY Mod4Mask /* Uncomment to use Super as modkey */
 #define TAGKEYS(KEY,TAG) \
   { MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
   { MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -138,60 +147,63 @@ static const Layout layouts[] = {
 
 /* Commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]     = { "dmenu_run", "-g", "3", "-l", "20", "-fn", "Source Code Pro:pixelsize=20", "-p", "Run: ", NULL };
-
+static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
+static const char *termcmd[]  = { "st", NULL };
 static Key keys[] = {
-  { MODKEY|ShiftMask,     XK_Return,   spawn, {.v = dmenucmd } },
-  { MODKEY,               XK_Return,   spawn, CMD("alacritty") },
-  { Mod1Mask,             XK_Return,   spawn, CMD("tabbed-term") },
 
-  /* Custom Key Maps */
-  { MODKEY|ShiftMask,  XK_Up,           rotatestack,    {.i = -1 } },
-  { MODKEY|ShiftMask,  XK_Down,         rotatestack,    {.i = +1 } },
-  { MODKEY,            XK_Up,           focusstack,     {.i = -1 } }, 
-  { MODKEY,            XK_Down,         focusstack,     {.i = +1 } }, 
-  { Mod1Mask,          XK_Tab,          focusstack,     {.i = +1 } }, 
-  { MODKEY,            XK_Left,         setmfact,       {.f = -0.01} }, 
-  { MODKEY,            XK_Right,        setmfact,       {.f = +0.01} },
-  { MODKEY,            XK_Prior,        focusmon,       {.i = -1 } },
-  { MODKEY,            XK_Next,         focusmon,       {.i = +1 } },
-  { MODKEY,            XK_Tab,          focusmon,       {.i = +1 } },
-  { MODKEY|ShiftMask,  XK_Prior,        tagmon,         {.i = -1 } },
-  { MODKEY|ShiftMask,  XK_Next,         tagmon,         {.i = +1 } },
-  { MODKEY,            XK_bracketright, cyclelayout,    {.i = -1 } },
-  { MODKEY,            XK_bracketleft,  cyclelayout,    {.i = +1 } },
-  { MODKEY,            XK_0,            view,           {.ui = ~0 } },
-  { MODKEY|ShiftMask,  XK_0,            tag,            {.ui = ~0 } },
-  { MODKEY,            XK_comma,        incnmaster,     {.i = -1 } },
-  { MODKEY,            XK_period,       incnmaster,     {.i = +1 } },
-  { MODKEY,            XK_c,            setlayout,      {.v = &layouts[0]} },
-  { MODKEY,            XK_h,            setlayout,      {.v = &layouts[1]} },
-  { MODKEY,            XK_m,            setlayout,      {.v = &layouts[2]} },
-  { MODKEY,            XK_d,            setlayout,      {.v = &layouts[3]} },
-  { MODKEY,            XK_f,            setlayout,      {.v = &layouts[4]} },
-  { MODKEY,            XK_t,            setlayout,      {.v = &layouts[5]} },
-  { MODKEY,            XK_g,            setlayout,      {.v = &layouts[6]} },
-  { MODKEY,            XK_s,            setlayout,      {.v = &layouts[7]} },
-  { MODKEY,            XK_u,            setlayout,      {.v = &layouts[8]} }, 
-  { MODKEY,            XK_a,            setlayout,      {0} },
-  { MODKEY,            XK_Home,         zoom,           {0} },
-  { MODKEY,            XK_b,            togglebar,      {0} },
-  { MODKEY,            XK_q,            killclient,     {0} },
-  { MODKEY|ShiftMask,  XK_space,        togglefloating, {0} },
-  { MODKEY,            XK_n,            togglealttag,   {0} },
-  { MODKEY,            XK_r,            reorganizetags, {0} },
+  /* Original DWM 6.2 Bindings */
+  { MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+	{ MODKEY,                       XK_b,      togglebar,      {0} },
+	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+	{ MODKEY,                       XK_i,      incnmaster,     {.i = +1 } },
+	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+	{ MODKEY,                       XK_Return, zoom,           {0} },
+	{ MODKEY,                       XK_Tab,    view,           {0} },
+	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+	{ MODKEY,                       XK_space,  setlayout,      {0} },
+	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+	{ MODKEY,                       XK_period, focusmon,       {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_comma,  tagmon,         {.i = -1 } },
+	{ MODKEY|ShiftMask,             XK_period, tagmon,         {.i = +1 } },
+	TAGKEYS(                        XK_1,                      0)
+	TAGKEYS(                        XK_2,                      1)
+	TAGKEYS(                        XK_3,                      2)
+	TAGKEYS(                        XK_4,                      3)
+	TAGKEYS(                        XK_5,                      4)
+	TAGKEYS(                        XK_6,                      5)
+	TAGKEYS(                        XK_7,                      6)
+	TAGKEYS(                        XK_8,                      7)
+	TAGKEYS(                        XK_9,                      8)
+	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
   
-  TAGKEYS(                  XK_1,          0)
-  TAGKEYS(                  XK_2,          1)
-  TAGKEYS(                  XK_3,          2)
-  TAGKEYS(                  XK_4,          3)
-  TAGKEYS(                  XK_5,          4)
-  TAGKEYS(                  XK_6,          5)
-  TAGKEYS(                  XK_7,          6)
-  TAGKEYS(                  XK_8,          7)
-  TAGKEYS(                  XK_9,          8)
-  { MODKEY|ShiftMask,       XK_q,          quit,      {0} },
-  { MODKEY|ShiftMask,       XK_r,          quit,      {1} }, 
+  /* Layouts */
+	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },  // Tile
+	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },  // Floating
+	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },  // Monocle
+  { MODKEY,                       XK_c,      setlayout,      {.v = &layouts[3]} }, // Column
+  { MODKEY,                       XK_g,      setlayout,      {.v = &layouts[4]} }, // Grid
+  { MODKEY,                       XK_u,      setlayout,      {.v = &layouts[5]} }, // Bottom Stack
+  { MODKEY,                       XK_d,      setlayout,      {.v = &layouts[6]} }, // Bottom Stack Horizontal
+  { MODKEY,                       XK_r,      setlayout,      {.v = &layouts[7]} }, // Spiral
+  { MODKEY|ShiftMask,             XK_r,      setlayout,      {.v = &layouts[8]} }, // Dwindle
+  
+  /* Original Patch Suggested Bindings */
+	{ MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} }, 
+  { MODKEY|ShiftMask,             XK_j,      rotatestack,    {.i = +1 } },
+	{ MODKEY|ShiftMask,             XK_k,      rotatestack,    {.i = -1 } },
+	{ MODKEY|ControlMask,		        XK_comma,  cyclelayout,    {.i = -1 } },
+	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
+  { MODKEY,                       XK_n,      togglealttag,   {0} },
+	{ MODKEY|ControlMask,           XK_r,      reorganizetags, {0} },  // Added control mask due to conflict with Fibonnaci patch
+  { MODKEY|ControlMask,           XK_u,      focusurgent,    {0} },  // Added control mask due to conflict with bstack patch
+  
 };
 
 /* button definitions */
@@ -200,7 +212,6 @@ static Button buttons[] = {
   /* click           event mask   button          function        argument */
   { ClkLtSymbol,     0,           Button1,        setlayout,      {0} },
   { ClkLtSymbol,     0,           Button2,        setlayout,      {.v = &layouts[2]} },
-  { ClkLtSymbol,     0,           Button3,        setlayout,      {.v = &layouts[0]} },
   { ClkWinTitle,     0,           Button2,        zoom,           {0} },
   { ClkClientWin,    MODKEY,      Button1,        movemouse,      {0} },
   { ClkClientWin,    MODKEY,      Button2,        togglefloating, {0} },
