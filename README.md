@@ -110,6 +110,9 @@ Some note, issues to keep in mind:
 
 # Patches Applied
 
++ [Suckless DWM full patch list](https://dwm.suckless.org/patches/)
++ [Map of Patches Possible](https://coggle.it/diagram/X9IiSSM6PTWOM9Wz/t/dwm-patches/d3448968e2509321527c3864cd4eee651e5f55e525582fdbf33be764972d9aef)
+
 ## General
 
 | Patch | Purpose |

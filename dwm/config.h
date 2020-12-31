@@ -2,9 +2,9 @@
 #include <X11/XF86keysym.h>
 
 /* Appearance */
-static const unsigned int borderpx = 2;                /* border pixel of windows */
+static const unsigned int borderpx = 1;                /* border pixel of windows */
 static const unsigned int snap     = 30;               /* snap pixel */
-static const unsigned int gappx    = 30;               /* pixel gap between clients */
+static const unsigned int gappx    = 15;               /* pixel gap between clients */
 static const int showbar           = 1;                /* 0 means no bar */
 static const int topbar            = 1;                /* 0 means bottom bar */
 static const int horizpadbar       = 10;               /* horizontal padding for statusbar */
@@ -228,14 +228,16 @@ static Key keys[] = {
   { MODKEY,                       XK_u,      focusurgent,    {0} },
   
   /* Custom Commands */
-  { MODKEY,                       XK_space,  spawn,          CMD("m-drun") },
-  { MODKEY,                       XK_x,      spawn,          CMD("m-run") },
-  { MODKEY,                       XK_w,      spawn,          CMD("m-window") },
+  { MODKEY,                       XK_space,  spawn,          CMD("rofi-app") },
+  { MODKEY,                       XK_x,      spawn,          CMD("rofi-run") },
+  { MODKEY,                       XK_w,      spawn,          CMD("rofi-window") },
+  { MODKEY,                       XK_e,      spawn,          CMD("rofi-fm") },
   { ControlMask,                  XK_Print,  spawn,          CMD("sleep 0.25s; shot") },
   { ShiftMask,                    XK_Print,  spawn,          CMD("sleep 0.25s; shot focused") },
   { 0,                            XK_Print,  spawn,          CMD("sleep 0.25s; shot select") },
   { MODKEY,                       XK_Print,  spawn,          CMD("m-scrot") },
   { MODKEY,                       XK_l,      spawn,          CMD("slock") },
+  { MODKEY|ShiftMask,             XK_x,      spawn,          CMD("xprop > /tmp/xprop.last") },
   { MODKEY,                       XK_o,      spawn,          CMD("m-quick-cmd") },
   { Mod1Mask|ControlMask,         XK_e,      spawn,          CMD("m-edit-configs") },
   { Mod1Mask|ControlMask,         XK_m,      spawn,          CMD("m-sysmon") },
@@ -244,10 +246,10 @@ static Key keys[] = {
   { Mod1Mask|ControlMask,         XK_n,      spawn,          CMD("m-notifications") },
   { Mod1Mask|ControlMask,         XK_f,      spawn,          CMD("m-fm") },
   { Mod1Mask|ControlMask,         XK_h,      spawn,          CMD("alacritty -e bpytop") },
-  { 0, XF86XK_AudioRaiseVolume,              spawn,          CMD("amixer set Master 1%+") },
-  { 0, XF86XK_Launch8,                       spawn,          CMD("amixer set Master 1%+") },
-  { 0, XF86XK_AudioLowerVolume,              spawn,          CMD("amixer set Master 1%-") },
-  { 0, XF86XK_Launch7,                       spawn,          CMD("amixer set Master 1%-") },
+  { 0, XF86XK_AudioRaiseVolume,              spawn,          CMD("amixer set Master 5%+") },
+  { 0, XF86XK_Launch8,                       spawn,          CMD("amixer set Master 5%+") },
+  { 0, XF86XK_AudioLowerVolume,              spawn,          CMD("amixer set Master 10%-") },
+  { 0, XF86XK_Launch7,                       spawn,          CMD("amixer set Master 10%-") },
   { 0, XF86XK_AudioMute,                     spawn,          CMD("amixer set Master toggle") },
   { 0, XF86XK_AudioPlay,                     spawn,          CMD("playerctl play-pause" )},
   { 0, XF86XK_AudioStop,                     spawn,          CMD("playerctl stop" )},
