@@ -151,7 +151,8 @@ Some note, issues to keep in mind:
 | [Pertag](https://dwm.suckless.org/patches/pertag/) | adds nmaster, mfact, layouts and more per tag rather than per monitor |
 | [Switch to Tag](https://dwm.suckless.org/patches/switchtotag/)  | TODO: Fix for Multi monitor setup and cancel switching back (or some other patch is conflicting). Works well in a single monitor setup |
 | [Focus Urgent](https://dwm.suckless.org/patches/focusurgent/)  | TODO: find monitor with urgent client and focus there first |
-| [TODO: Switch to Urgent] | Look into finding/creating path to switch to urgent
+| [Named Scratch Pads](https://dwm.suckless.org/patches/namedscratchpads/) |  Allows for the creation of multiple scratchpad windows, each assigned to different keybinds. On pressing the keybind the window will either spawn based on the given command (if it's not already running) or toggle visibility of the window |
+| [TODO: Switch to Urgent] | Look into finding/creating patch to switch to urgent |
 
 ## Layouts
 + TODO: Fix fibonacci layouts spacing

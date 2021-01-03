@@ -106,30 +106,33 @@ static const Rule rules[] = {
    * WM_NAME(STRING) = title
    * Monitors: Left = 2; Main = 0; Right = 1
    */
-  /* class                        instance                       title              tags mask    swithtotag   isfloating   monitor */
+  /* class                        instance                       title              tags mask    swithtotag   isfloating   monitor scratch key*/
   /* Left Monitor */
-  { "firefox",                    "Navigator",                  NULL,              1,           0,            0,           2   },
-  { "Thunderbird",                "Mail",                       NULL,              2,           0,            0,           2   },
-  { "realvnc-vncviewer",          NULL,                         NULL,              0,           0,            1,           2   },  
+  { "firefox",                    "Navigator",                  NULL,              1,           0,            0,           2,         0  },
+  { "Thunderbird",                "Mail",                       NULL,              2,           0,            0,           2,         0  },
+  { "realvnc-vncviewer",          NULL,                         NULL,              0,           0,            1,           2,         0  },  
   
   /* Middle Monitor */
-  { "Code",                       "code",                       NULL,              0,           0,            0,           0   },
-  { "Sxiv",                       "sxiv",                       NULL,              0,           0,            0,           0   },
+  { "Code",                       "code",                       NULL,              0,           0,            0,           0,         0  },
+  { "Sxiv",                       "sxiv",                       NULL,              0,           0,            0,           0,         0  },
   
   /* Right Monitor */
-  { "Slack",                      "slack",                      NULL,              1,           0,            0,           1   },
-  { "whatsapp-nativefier-930aa1", "whatsapp-nativefier-930aa1", NULL,              1,           0,            0,           1   },  
-  { "discord",                    "discord",                    NULL,              1,           0,            0,           1   },
-  { "zoom",                       "zoom",                       NULL,              2,           0,            1,           1   },
-  { NULL,                         NULL,                         "Spotify Premium", 0,           0,            0,           1   },
+  { "Slack",                      "slack",                      NULL,              1,           0,            0,           1,         0  },
+  { "whatsapp-nativefier-930aa1", "whatsapp-nativefier-930aa1", NULL,              1,           0,            0,           1,         0  },  
+  { "discord",                    "discord",                    NULL,              1,           0,            0,           1,         0  },
+  { "zoom",                       "zoom",                       NULL,              2,           0,            1,           1,         0  },
+  { NULL,                         NULL,                         "Spotify Premium", 0,           0,            0,           1,         0  },
   
   /* Any Monitor */
-  { "Gpick",                      "gpick",                      NULL,              0,           0,            1,           -1  },
-  { "mpv",                        "gl",                         NULL,              0,           0,            1,           -1  },
-  { "Nitrogen",                   "nitrogen",                   NULL,              0,           0,            1,           -1  },
-  { "Galculator",                 "galculator",                 NULL,              0,           0,            1,           -1  },
-  { "Pcmanfm",                    "pcmanfm",                    NULL,              0,           0,            1,           -1  },
-  { "Pcmanfm",                    "pcmanfm",                    "Execute File",    0,           0,            1,           -1  },
+  { "Gpick",                      "gpick",                      NULL,              0,           0,            1,           -1,        0  },
+  { "mpv",                        "gl",                         NULL,              0,           0,            1,           -1,        0  },
+  { "Nitrogen",                   "nitrogen",                   NULL,              0,           0,            1,           -1,        0  },
+  { "Galculator",                 "galculator",                 NULL,              0,           0,            1,           -1,        0  },
+  { "Pcmanfm",                    "pcmanfm",                    NULL,              0,           0,            1,           -1,        0  },
+  { "Pcmanfm",                    "pcmanfm",                    "Execute File",    0,           0,            1,           -1,        0  },
+
+  /* Scratch Pad (Check the application and see where it applies name assignment. */
+  { NULL,                         "scratchpad",                 NULL,              0,           0,            1,           0,        's' },
 
 };
 
@@ -172,6 +175,10 @@ static const Layout layouts[] = {
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
 static const char *dmenucmd[] = { "dmenu_run", "-g", "3", "-l", "20", "-fn", "Source Code Pro:pixelsize=20", "-p", "Run: ", NULL };
 static const char *termcmd[]  = { "kitty", NULL };
+
+/* First arg only serves to match against key in rules */
+static const char *scratchpadcmd[] = {"s", "kitty", "--name", "scratchpad", "-o", "initial_window_width=2300", "-o", "initial_window_height=1100", "-o", "background=#383f61", NULL};
+
 static Key keys[] = {
 
   /* Core Functions */
@@ -226,6 +233,7 @@ static Key keys[] = {
   { MODKEY,                       XK_n,            togglealttag,   {0} },
   { MODKEY,                       XK_r,            reorganizetags, {0} },
   { MODKEY,                       XK_u,            focusurgent,    {0} },
+  { MODKEY,                       XK_grave,        togglescratch,  {.v = scratchpadcmd } },
   
   /* Custom Commands */
   { MODKEY,                       XK_space,        spawn,          CMD("rofi-app") },
