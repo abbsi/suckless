@@ -131,7 +131,7 @@ static const Rule rules[] = {
   { "Pcmanfm",                    "pcmanfm",                    NULL,              0,           0,            1,           -1,        0  },
   { "Pcmanfm",                    "pcmanfm",                    "Execute File",    0,           0,            1,           -1,        0  },
 
-  /* Scratch Pad (Check the application and see where it applies name assignment. */
+  /* Scratch Pad (Check the application and see where it applies name assignment. Does not switch monitors, keep it to one monitor */
   { NULL,                         "scratchpad",                 NULL,              0,           0,            1,           0,        's' },
 
 };
@@ -177,7 +177,13 @@ static const char *dmenucmd[] = { "dmenu_run", "-g", "3", "-l", "20", "-fn", "So
 static const char *termcmd[]  = { "kitty", NULL };
 
 /* First arg only serves to match against key in rules */
-static const char *scratchpadcmd[] = {"s", "kitty", "--name", "scratchpad", "-o", "initial_window_width=2300", "-o", "initial_window_height=1100", "-o", "background=#383f61", NULL};
+static const char *scratchpadcmd[] = {"s", "kitty", 
+                                           "--name", "scratchpad", 
+                                           "-o", "initial_window_width=2300", 
+                                           "-o", "initial_window_height=1100", 
+                                           "-o", "background=#2b2e3b", 
+                                           "-o", "background_opacity=0.5",
+                                           NULL};
 
 static Key keys[] = {
 
