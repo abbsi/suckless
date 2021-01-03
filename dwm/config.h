@@ -170,108 +170,106 @@ static const Layout layouts[] = {
 
 /* Commands */
 static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
-static const char *dmenucmd[]     = { "dmenu_run", "-g", "3", "-l", "20", "-fn", "Source Code Pro:pixelsize=20", "-p", "Run: ", NULL };
-static const char *termcmd[]  = { "alacritty", NULL };
+static const char *dmenucmd[] = { "dmenu_run", "-g", "3", "-l", "20", "-fn", "Source Code Pro:pixelsize=20", "-p", "Run: ", NULL };
+static const char *termcmd[]  = { "kitty", NULL };
 static Key keys[] = {
 
   /* Core Functions */
-  { MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
-  { MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
-  { MODKEY,                       XK_b,      togglebar,      {0} },
-  { MODKEY,                       XK_Up,     focusstack,     {.i = -1 } }, 
-  { MODKEY,                       XK_Down,   focusstack,     {.i = +1 } }, 
-  { MODKEY,                       XK_comma,  incnmaster,     {.i = -1 } },
-  { MODKEY,                       XK_period, incnmaster,     {.i = +1 } },
-  { MODKEY,                       XK_Left,   setmfact,       {.f = -0.01} }, 
-  { MODKEY,                       XK_Right,  setmfact,       {.f = +0.01} },
-  { MODKEY,                       XK_Return, zoom,           {0} },
-  { MODKEY,                       XK_Tab,    view,           {0} },
-  { MODKEY,                       XK_q,      killclient,     {0} },
-  { MODKEY,                       XK_a,      setlayout,      {0} },
-  { MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-  { MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-  { MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
-  { MODKEY,                       XK_Prior,  focusmon,       {.i = -1 } },
-  { MODKEY,                       XK_Next,   focusmon,       {.i = +1 } },
-  { MODKEY|ControlMask,           XK_Prior,  tagmon,         {.i = -1 } },
-  { MODKEY|ControlMask,           XK_Next,   tagmon,         {.i = +1 } },
-  TAGKEYS(                        XK_1,                      0)
-  TAGKEYS(                        XK_2,                      1)
-  TAGKEYS(                        XK_3,                      2)
-  TAGKEYS(                        XK_4,                      3)
-  TAGKEYS(                        XK_5,                      4)
-  TAGKEYS(                        XK_6,                      5)
-  TAGKEYS(                        XK_7,                      6)
-  TAGKEYS(                        XK_8,                      7)
-  TAGKEYS(                        XK_9,                      8)
-  { MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+  { MODKEY,                       XK_p,            spawn,          {.v = dmenucmd } },
+  { MODKEY|ShiftMask,             XK_Return,       spawn,          {.v = termcmd } },
+  { MODKEY,                       XK_b,            togglebar,      {0} },
+  { MODKEY,                       XK_Up,           focusstack,     {.i = -1 } }, 
+  { MODKEY,                       XK_Down,         focusstack,     {.i = +1 } }, 
+  { MODKEY,                       XK_KP_Add,       incnmaster,     {.i = -1 } },
+  { MODKEY,                       XK_KP_Subtract,  incnmaster,     {.i = +1 } },
+  { MODKEY,                       XK_Left,         setmfact,       {.f = -0.01} }, 
+  { MODKEY,                       XK_Right,        setmfact,       {.f = +0.01} },
+  { MODKEY,                       XK_Return,       zoom,           {0} },
+//{ MODKEY,                       XK_Tab,          view,           {0} }, //Back to previous view
+  { MODKEY,                       XK_q,            killclient,     {0} },
+//{ MODKEY,                       XK_a,            setlayout,      {0} }, //Back to previous layout
+  { MODKEY|ShiftMask,             XK_space,        togglefloating, {0} },
+  { MODKEY,                       XK_0,            view,           {.ui = ~0 } },
+  { MODKEY|ShiftMask,             XK_0,            tag,            {.ui = ~0 } },
+  { MODKEY,                       XK_bracketleft,  focusmon,       {.i = -1 } },
+  { MODKEY,                       XK_bracketright, focusmon,       {.i = +1 } },
+  { MODKEY|ShiftMask,             XK_bracketleft,  tagmon,         {.i = -1 } },
+  { MODKEY|ShiftMask,             XK_bracketright, tagmon,         {.i = +1 } },
+  TAGKEYS(                        XK_1,                            0)
+  TAGKEYS(                        XK_2,                            1)
+  TAGKEYS(                        XK_3,                            2)
+  TAGKEYS(                        XK_4,                            3)
+  TAGKEYS(                        XK_5,                            4)
+  TAGKEYS(                        XK_6,                            5)
+  TAGKEYS(                        XK_7,                            6)
+  TAGKEYS(                        XK_8,                            7)
+  TAGKEYS(                        XK_9,                            8)
+  { MODKEY|ShiftMask,             XK_q,            quit,           {0} },
 
   /* Layouts */
-  { MODKEY,                       XK_c,      setlayout,      {.v = &layouts[0]} }, 
-  { MODKEY,                       XK_t,      setlayout,      {.v = &layouts[1]} },
-  { MODKEY,                       XK_h,      setlayout,      {.v = &layouts[2]} },
-  { MODKEY,                       XK_d,      setlayout,      {.v = &layouts[3]} },
-  { MODKEY,                       XK_m,      setlayout,      {.v = &layouts[4]} },
-  { MODKEY,                       XK_f,      setlayout,      {.v = &layouts[5]} },
-  { MODKEY,                       XK_g,      setlayout,      {.v = &layouts[6]} },
-  { MODKEY,                       XK_s,      setlayout,      {.v = &layouts[7]} },
-  { MODKEY,                       XK_u,      setlayout,      {.v = &layouts[8]} }, 
+  { MODKEY,                       XK_c,            setlayout,      {.v = &layouts[0]} }, 
+  { MODKEY,                       XK_t,            setlayout,      {.v = &layouts[1]} },
+  { MODKEY,                       XK_h,            setlayout,      {.v = &layouts[2]} },
+  { MODKEY,                       XK_d,            setlayout,      {.v = &layouts[3]} },
+  { MODKEY,                       XK_m,            setlayout,      {.v = &layouts[4]} },
+  { MODKEY,                       XK_f,            setlayout,      {.v = &layouts[5]} },
+  { MODKEY,                       XK_g,            setlayout,      {.v = &layouts[6]} },
+  { MODKEY,                       XK_s,            setlayout,      {.v = &layouts[7]} },
+  { MODKEY,                       XK_u,            setlayout,      {.v = &layouts[8]} }, 
   
   /* Patch Key Bindings */
-  { MODKEY|ControlMask|ShiftMask, XK_q,      quit,           {1} }, 
-  { MODKEY|ShiftMask,             XK_Up,     rotatestack,    {.i = -1 } },
-  { MODKEY|ShiftMask,             XK_Down,   rotatestack,    {.i = +1 } },
-  { MODKEY|ControlMask,		        XK_comma,  cyclelayout,    {.i = -1 } },
-	{ MODKEY|ControlMask,           XK_period, cyclelayout,    {.i = +1 } },
-  { MODKEY,                       XK_n,      togglealttag,   {0} },
-  { MODKEY,                       XK_r,      reorganizetags, {0} },
-  { MODKEY,                       XK_u,      focusurgent,    {0} },
+  { MODKEY|ControlMask|ShiftMask, XK_q,            quit,           {1} }, 
+  { MODKEY|ShiftMask,             XK_Up,           rotatestack,    {.i = -1 } },
+  { MODKEY|ShiftMask,             XK_Down,         rotatestack,    {.i = +1 } },
+//{ MODKEY|ControlMask,           XK_comma,        cyclelayout,    {.i = -1 } },
+  { MODKEY,                       XK_Tab,          cyclelayout,    {.i = +1 } },
+  { MODKEY,                       XK_n,            togglealttag,   {0} },
+  { MODKEY,                       XK_r,            reorganizetags, {0} },
+  { MODKEY,                       XK_u,            focusurgent,    {0} },
   
   /* Custom Commands */
-  { MODKEY,                       XK_space,  spawn,          CMD("rofi-app") },
-  { MODKEY,                       XK_x,      spawn,          CMD("rofi-run") },
-  { MODKEY,                       XK_w,      spawn,          CMD("rofi-window") },
-  { MODKEY,                       XK_e,      spawn,          CMD("rofi-fm") },
-  { ControlMask,                  XK_Print,  spawn,          CMD("sleep 0.25s; shot") },
-  { ShiftMask,                    XK_Print,  spawn,          CMD("sleep 0.25s; shot focused") },
-  { 0,                            XK_Print,  spawn,          CMD("sleep 0.25s; shot select") },
-  { MODKEY,                       XK_Print,  spawn,          CMD("m-scrot") },
-  { MODKEY,                       XK_l,      spawn,          CMD("slock") },
-  { MODKEY|ShiftMask,             XK_x,      spawn,          CMD("xprop > /tmp/xprop.last") },
-  { MODKEY,                       XK_o,      spawn,          CMD("m-quick-cmd") },
-  { Mod1Mask|ControlMask,         XK_e,      spawn,          CMD("m-edit-configs") },
-  { Mod1Mask|ControlMask,         XK_m,      spawn,          CMD("m-sysmon") },
-  { Mod1Mask|ControlMask,         XK_s,      spawn,          CMD("m-todo2") },
-  { Mod1Mask|ControlMask,         XK_t,      spawn,          CMD("m-todo") },
-  { Mod1Mask|ControlMask,         XK_n,      spawn,          CMD("m-notifications") },
-  { Mod1Mask|ControlMask,         XK_f,      spawn,          CMD("m-fm") },
-  { Mod1Mask|ControlMask,         XK_h,      spawn,          CMD("alacritty -e bpytop") },
-  { 0, XF86XK_AudioRaiseVolume,              spawn,          CMD("amixer set Master 5%+") },
-  { 0, XF86XK_Launch8,                       spawn,          CMD("amixer set Master 5%+") },
-  { 0, XF86XK_AudioLowerVolume,              spawn,          CMD("amixer set Master 10%-") },
-  { 0, XF86XK_Launch7,                       spawn,          CMD("amixer set Master 10%-") },
-  { 0, XF86XK_AudioMute,                     spawn,          CMD("amixer set Master toggle") },
-  { 0, XF86XK_AudioPlay,                     spawn,          CMD("playerctl play-pause" )},
-  { 0, XF86XK_AudioStop,                     spawn,          CMD("playerctl stop" )},
-  { 0, XF86XK_AudioPrev,                     spawn,          CMD("playerctl previous" )},
-  { 0, XF86XK_AudioNext,                     spawn,          CMD("playerctl next" )},
+  { MODKEY,                       XK_space,        spawn,          CMD("rofi-app") },
+  { MODKEY,                       XK_x,            spawn,          CMD("rofi-run") },
+  { MODKEY,                       XK_w,            spawn,          CMD("rofi-win") },
+  { MODKEY,                       XK_e,            spawn,          CMD("rofi-fm") },
+  { ControlMask,                  XK_Print,        spawn,          CMD("sleep 0.25s; shot") },
+  { ShiftMask,                    XK_Print,        spawn,          CMD("sleep 0.25s; shot focused") },
+  { 0,                            XK_Print,        spawn,          CMD("sleep 0.25s; shot select") },
+  { MODKEY,                       XK_Print,        spawn,          CMD("m-scrot") },
+  { MODKEY,                       XK_l,            spawn,          CMD("slock") },
+  { MODKEY|ShiftMask,             XK_x,            spawn,          CMD("xprop > /tmp/xprop.last") },
+  { MODKEY,                       XK_o,            spawn,          CMD("m-quick-cmd") },
+  { Mod1Mask|ControlMask,         XK_e,            spawn,          CMD("m-edit-configs") },
+  { Mod1Mask|ControlMask,         XK_m,            spawn,          CMD("m-sysmon") },
+  { Mod1Mask|ControlMask,         XK_s,            spawn,          CMD("m-todo2") },
+  { Mod1Mask|ControlMask,         XK_t,            spawn,          CMD("m-todo") },
+  { Mod1Mask|ControlMask,         XK_n,            spawn,          CMD("m-notifications") },
+  { 0, XF86XK_AudioRaiseVolume,                    spawn,          CMD("amixer set Master 5%+") },
+  { 0, XF86XK_Launch8,                             spawn,          CMD("amixer set Master 5%+") },
+  { 0, XF86XK_AudioLowerVolume,                    spawn,          CMD("amixer set Master 10%-") },
+  { 0, XF86XK_Launch7,                             spawn,          CMD("amixer set Master 10%-") },
+  { 0, XF86XK_AudioMute,                           spawn,          CMD("amixer set Master toggle") },
+  { 0, XF86XK_AudioPlay,                           spawn,          CMD("playerctl play-pause" )},
+  { 0, XF86XK_AudioStop,                           spawn,          CMD("playerctl stop" )},
+  { 0, XF86XK_AudioPrev,                           spawn,          CMD("playerctl previous" )},
+  { 0, XF86XK_AudioNext,                           spawn,          CMD("playerctl next" )},
 };
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
 static Button buttons[] = {
-  /* click           event mask   button          function        argument */
-  { ClkLtSymbol,     0,           Button1,        setlayout,      {0} },
-  { ClkLtSymbol,     0,           Button2,        setlayout,      {.v = &layouts[2]} },
-  { ClkLtSymbol,     0,           Button3,        setlayout,      {.v = &layouts[0]} },
-  { ClkWinTitle,     0,           Button2,        zoom,           {0} },
-  { ClkClientWin,    MODKEY,      Button1,        movemouse,      {0} },
-  { ClkClientWin,    MODKEY,      Button2,        togglefloating, {0} },
-  { ClkClientWin,    MODKEY,      Button3,        resizemouse,    {0} },
-  { ClkTagBar,       0,           Button1,        view,           {0} },
-  { ClkTagBar,       0,           Button3,        toggleview,     {0} },
-  { ClkTagBar,       MODKEY,      Button1,        tag,            {0} },
-  { ClkTagBar,       MODKEY,      Button3,        toggletag,      {0} },
+  /* click           event mask   button           function        argument */
+  { ClkLtSymbol,     0,           Button1,         setlayout,      {0} },
+  { ClkLtSymbol,     0,           Button2,         setlayout,      {.v = &layouts[2]} },
+  { ClkLtSymbol,     0,           Button3,         setlayout,      {.v = &layouts[0]} },
+  { ClkWinTitle,     0,           Button2,         zoom,           {0} },
+  { ClkClientWin,    MODKEY,      Button1,         movemouse,      {0} },
+  { ClkClientWin,    MODKEY,      Button2,         togglefloating, {0} },
+  { ClkClientWin,    MODKEY,      Button3,         resizemouse,    {0} },
+  { ClkTagBar,       0,           Button1,         view,           {0} },
+  { ClkTagBar,       0,           Button3,         toggleview,     {0} },
+  { ClkTagBar,       MODKEY,      Button1,         tag,            {0} },
+  { ClkTagBar,       MODKEY,      Button3,         toggletag,      {0} },
 };
 
 static const char *ipcsockpath = "/tmp/dwm.sock";
