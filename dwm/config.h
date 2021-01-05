@@ -9,7 +9,7 @@ static const int showbar           = 1;                /* 0 means no bar */
 static const int topbar            = 1;                /* 0 means bottom bar */
 static const int horizpadbar       = 10;               /* horizontal padding for statusbar */
 static const int vertpadbar        = 15;               /* vertical padding for statusbar */
-static const int showclientind     = 1;                /* 1 means show client indicators on tag */
+static const int showclientind     = 0;                /* 1 means show client indicators on tag */
 
 /* Alternative Bars */
 static const int usealtbar         = 1;                /* 1 means use non-dwm status bar */
@@ -26,46 +26,59 @@ static const char *fonts[]         = {
 
 static const char dmenufont[]     = "monospace:size=12";
 
-static const char col_gray1[]     = "#222222";
-static const char col_gray2[]     = "#444444";
-static const char col_gray3[]     = "#bbbbbb";
-static const char col_gray4[]     = "#eeeeee";
-static const char col_cyan[]      = "#005577";
-
 /* Custom Colors */ 
-static const char col_bg[]        = "#222222";
-static const char col_bluegray[]  = "#23395B";
-static const char col_blue[]      = "#23799B";
-static const char col_lightblue[] = "#4399BB";
-static const char col_offwhite[]  = "#d7d7d7";
-static const char col_hotpink[]   = "#F7006F";
-static const char col_darkgray[]  = "#222222";
-static const char col_lightgray[] = "#666666";
-static const char col_black[]     = "#000000";
-static const char col_red[]       = "#ff2244";
-static const char col_orange[]    = "#ff8800";
-static const char col_yellow[]    = "#ffff00";
-static const char col_white[]     = "#ffffff";
-static const char col_green[]     = "#009900"; 
+/* Uses a pywal generate theme. If you do not have pywal, then comment out line below and uncomment the color block below it */
+#include "/home/nabil/.cache/wal/colors-wal-dwm.h"
+
+/*
+static const char wal_norm_fg[] = "#c7c3c1";
+static const char wal_norm_bg[] = "#210f07";
+static const char wal_norm_border[] = "#584b45";
+
+static const char wal_sel_fg[] = "#c7c3c1";
+static const char wal_sel_bg[] = "#c05b1a";
+static const char wal_sel_border[] = "#a84d24";
+
+static const char wal_urg_fg[] = "#c7c3c1";      //Not Used, patch not applied
+static const char wal_urg_bg[] = "#a84d24";      //Not Used, patch not applied
+static const char wal_urg_border[] = "#a84d24";  //Not Used, patch not applied
+
+static const char color00[] = "#210f07";
+static const char color01[] = "#a84d24";
+static const char color02[] = "#c05b1a";
+static const char color03[] = "#c65e18";
+static const char color04[] = "#da6810";
+static const char color05[] = "#e16c0d";
+static const char color06[] = "#f37505";
+static const char color07[] = "#c7c3c1";
+static const char color08[] = "#584b45";
+static const char color09[] = "#a84d24";
+static const char color10[] = "#c05b1a";
+static const char color11[] = "#c65e18";
+static const char color12[] = "#da6810";
+static const char color13[] = "#e16c0d";
+static const char color14[] = "#f37505";
+static const char color15[] = "#c7c3c1";
+*/
 
 /* Bar opacity ; 0xff is no transparency. Play with the value to get desired transparency. */
 static const unsigned int baralpha    = 0xdd; 
 static const unsigned int borderalpha = 0xaa; 
 static const char *colors[][3]        = {
   /*                    fg            bg            border   */
-  [SchemeNorm]     = { col_offwhite,  col_bg,        col_darkgray },
-  [SchemeSel]      = { col_orange,    col_bg,        col_offwhite },
-  [SchemeStatus]   = { col_offwhite,  col_bg,        col_black }, // Statusbar right {text,background,not used but cannot be empty}
-	[SchemeTagsSel]  = { col_offwhite,  col_bluegray,  col_black }, // Tagbar left selected {text,background,not used but cannot be empty}
-  [SchemeTagsNorm] = { col_offwhite,  col_lightgray, col_black }, // Tagbar left unselected {text,background,not used but cannot be empty}
-  [SchemeInfoSel]  = { col_offwhite,  col_bg,        col_black }, // infobar middle  selected {text,background,not used but cannot be empty}
-  [SchemeInfoNorm] = { col_lightgray, col_bg,        col_black }, // infobar middle  unselected {text,background,not used but cannot be empty}
-  [Scheme08]       = { col_red,       col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x08 )
-  [Scheme09]       = { col_green,     col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x09 )
-  [Scheme0A]       = { col_hotpink,   col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0A )
-  [Scheme0B]       = { col_lightblue, col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0B )
-  [Scheme0C]       = { col_blue,      col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0C )
-  [Scheme0D]       = { col_offwhite,  col_bg,        col_black }, // for use with DWM Blocks / slstatus ( \x0D )
+  [SchemeNorm]     = { wal_norm_fg,   wal_norm_bg,   wal_norm_border },
+  [SchemeSel]      = { wal_sel_fg,    wal_sel_bg,    wal_sel_border },
+  [SchemeStatus]   = { color01,       color03,       color00 }, // Statusbar right {text,background,not used but cannot be empty}
+	[SchemeTagsSel]  = { color00,       color01,       color00 }, // Tagbar left selected {text,background,not used but cannot be empty}
+  [SchemeTagsNorm] = { color00,       color02,       color00 }, // Tagbar left unselected {text,background,not used but cannot be empty}
+  [SchemeInfoSel]  = { color15,       color00,       color00 }, // infobar middle  unselected {text,background,not used but cannot be empty}
+  [SchemeInfoNorm] = { color01,       color15,       color00 }, // infobar middle  selected {text,background,not used but cannot be empty}
+  [Scheme08]       = { color01,       color15,       color00 }, // for use with DWM Blocks / slstatus ( \x08 )
+  [Scheme09]       = { color02,       color15,       color00 }, // for use with DWM Blocks / slstatus ( \x09 )
+  [Scheme0A]       = { color03,       color15,       color00 }, // for use with DWM Blocks / slstatus ( \x0A )
+  [Scheme0B]       = { color01,       color15,       color00 }, // for use with DWM Blocks / slstatus ( \x0B )
+  [Scheme0C]       = { color02,       color15,       color00 }, // for use with DWM Blocks / slstatus ( \x0C )
+  [Scheme0D]       = { color03,       color15,       color00 }, // for use with DWM Blocks / slstatus ( \x0D )
 };
 static const unsigned int alphas[][3] = {
 /*                   fg       bg        border     */
@@ -181,8 +194,8 @@ static const char *scratchpadcmd[] = {"s", "kitty",
                                            "--name", "scratchpad", 
                                            "-o", "initial_window_width=2300", 
                                            "-o", "initial_window_height=1100", 
-                                           "-o", "background=#2b2e3b", 
-                                           "-o", "background_opacity=0.5",
+                                           "-o", "background=#2B2B3B", 
+                                           "-o", "background_opacity=0.85",
                                            NULL};
 
 static Key keys[] = {
