@@ -65,7 +65,7 @@ static const char unknown_str[] = "n/a";
  */
 static const struct arg args[] = {
   /* function format          argument */
-  { run_command,          "\x08阮 %s ",        "spotify-status" },
+  { run_command,          "\x08  阮 %s ",        "spotify-status" },
   { cpu_perc,             "\x09   %s%% ",     NULL }, //       閭
   { ram_perc,             "  %s%%  ",         NULL }, 
   { disk_perc,            "  %s%%  ",         "/" },  // 
