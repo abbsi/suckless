@@ -14,15 +14,21 @@ static const char *fonts[] = {
   "JoyPixels:pixelsize=16:antialias=true:autohint=true"
 };
 static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
-static const char *colors[SchemeLast][2] = {
-                          /*   fg         bg    */
-  [SchemeNorm] =          { "#cccccc", "#23395B" },
-  [SchemeSel] =           { "#ffffff", "#04253A" },
-  [SchemeSelHighlight] =  { "#d7d7d7", "#04253A" },
-  [SchemeNormHighlight] = { "#d7d7d7", "#064C74" },
-  [SchemeOut] =           { "#000000", "#04253A" },
-  [SchemeMid] =           { "#d7d7d7", "#04334E" },
-};
+
+/* Uses a pywal generated theme. If you do not use pywal, then comment out line below and uncomment the color block below it */
+#include "/home/abbsi/.cache/wal/colors-wal-dmenu.h"
+
+// static const char *colors[SchemeLast][2] = {
+//                           /*   fg         bg    */
+//   [SchemeNorm] =          { "#cccccc", "#23395B" },
+//   [SchemeSel] =           { "#ffffff", "#04253A" },
+//   [SchemeOut] =           { "#000000", "#04253A" },
+//   [SchemeSelHighlight] =  { "#d7d7d7", "#04253A" },
+//   [SchemeNormHighlight] = { "#d7d7d7", "#064C74" },
+//   [SchemeMid] =           { "#d7d7d7", "#04334E" },
+// };
+
+
 /* -l and -g options; controls number of lines and columns in grid if > 0 */
 static unsigned int lines      = 0;
 static unsigned int lineheight = 16;  /* -h option; minimum height of a menu line */
