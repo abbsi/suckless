@@ -2,7 +2,7 @@
 #include <X11/XF86keysym.h>
 
 /* Appearance */
-static const unsigned int borderpx = 1;                /* border pixel of windows */
+static const unsigned int borderpx = 3;                /* border pixel of windows */
 static const unsigned int snap     = 30;               /* snap pixel */
 static const unsigned int gappx    = 15;               /* pixel gap between clients */
 static const int showbar           = 1;                /* 0 means no bar */
@@ -28,37 +28,37 @@ static const char dmenufont[]     = "monospace:size=12";
 
 /* Custom Colors */ 
 /* Uses a pywal generate theme. If you do not have pywal, then comment out line below and uncomment the color block below it */
-#include "/home/nabil/.cache/wal/colors-wal-dwm.h"
+#include "/home/abbsi/.cache/wal/colors-wal-dwm.h"
 
 /*
-static const char wal_norm_fg[] = "#c7c3c1";
-static const char wal_norm_bg[] = "#210f07";
-static const char wal_norm_border[] = "#584b45";
+static const char norm_fg[]     = "#c7c3c1";
+static const char norm_bg[]     = "#210f07";
+static const char norm_border[] = "#584b45";
 
-static const char wal_sel_fg[] = "#c7c3c1";
-static const char wal_sel_bg[] = "#c05b1a";
-static const char wal_sel_border[] = "#a84d24";
+static const char sel_fg[]      = "#c7c3c1";
+static const char sel_bg[]      = "#c05b1a";
+static const char sel_border[]  = "#a84d24";
 
-static const char wal_urg_fg[] = "#c7c3c1";      //Not Used, patch not applied
-static const char wal_urg_bg[] = "#a84d24";      //Not Used, patch not applied
-static const char wal_urg_border[] = "#a84d24";  //Not Used, patch not applied
+static const char urg_fg[]      = "#c7c3c1";      //Not Used, patch not applied
+static const char urg_bg[]      = "#a84d24";      //Not Used, patch not applied
+static const char urg_border[]  = "#a84d24";      //Not Used, patch not applied
 
-static const char color00[] = "#210f07";
-static const char color01[] = "#a84d24";
-static const char color02[] = "#c05b1a";
-static const char color03[] = "#c65e18";
-static const char color04[] = "#da6810";
-static const char color05[] = "#e16c0d";
-static const char color06[] = "#f37505";
-static const char color07[] = "#c7c3c1";
-static const char color08[] = "#584b45";
-static const char color09[] = "#a84d24";
-static const char color10[] = "#c05b1a";
-static const char color11[] = "#c65e18";
-static const char color12[] = "#da6810";
-static const char color13[] = "#e16c0d";
-static const char color14[] = "#f37505";
-static const char color15[] = "#c7c3c1";
+static const char color00[]     = "#210f07";
+static const char color01[]     = "#a84d24";
+static const char color02[]     = "#c05b1a";
+static const char color03[]     = "#c65e18";
+static const char color04[]     = "#da6810";
+static const char color05[]     = "#e16c0d";
+static const char color06[]     = "#f37505";
+static const char color07[]     = "#c7c3c1";
+static const char color08[]     = "#584b45";
+static const char color09[]     = "#a84d24";
+static const char color10[]     = "#c05b1a";
+static const char color11[]     = "#c65e18";
+static const char color12[]     = "#da6810";
+static const char color13[]     = "#e16c0d";
+static const char color14[]     = "#f37505";
+static const char color15[]     = "#c7c3c1";
 */
 
 /* Bar opacity ; 0xff is no transparency. Play with the value to get desired transparency. */
@@ -66,8 +66,8 @@ static const unsigned int baralpha    = 0xdd;
 static const unsigned int borderalpha = 0xaa; 
 static const char *colors[][3]        = {
   /*                    fg            bg            border   */
-  [SchemeNorm]     = { wal_norm_fg,   wal_norm_bg,   wal_norm_border },
-  [SchemeSel]      = { wal_sel_fg,    wal_sel_bg,    wal_sel_border },
+  [SchemeNorm]     = { norm_fg,       norm_bg,       norm_border },
+  [SchemeSel]      = { sel_fg,        sel_bg,        sel_border },
   [SchemeStatus]   = { color01,       color03,       color00 }, // Statusbar right {text,background,not used but cannot be empty}
 	[SchemeTagsSel]  = { color00,       color01,       color00 }, // Tagbar left selected {text,background,not used but cannot be empty}
   [SchemeTagsNorm] = { color00,       color02,       color00 }, // Tagbar left unselected {text,background,not used but cannot be empty}
