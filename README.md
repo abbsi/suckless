@@ -120,6 +120,7 @@ Some note, issues to keep in mind:
 | [Auto Start](https://dwm.suckless.org/patches/autostart/) | makes dwm run `~/.dwm/autostart_blocking.sh` and `~/.dwm/autostart.sh &` on startup |
 | [Static Status](https://dwm.suckless.org/patches/staticstatus/)  | allows the status text to be fixed to the bar on a specific monitor rather than being drawn on the focused monitor. Update `staticmonval` to select monitor |
 | [Restart Signal](https://dwm.suckless.org/patches/restartsig/) | adds a keyboard shortcut to restart dwm or alternatively by using `kill -HUP dwmpid` and additionally dwm can quit cleanly by using `kill -TERM dwmpid` |
+| [EWMH Tags](https://dwm.suckless.org/patches/ewmhtags/) | adds EWMH support for _NET_NUMBER_OF_DESKTOPS, _NET_CURRENT_DESKTOP, _NET_DESKTOP_NAMES, and _NET_DESKTOP_VIEWPORT, which allows for compatibility with other bars and programs that request workspace information. for example, polybar's xworkspaces module |
 
 ## Appearance
 
