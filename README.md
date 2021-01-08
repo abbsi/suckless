@@ -121,6 +121,7 @@ Some note, issues to keep in mind:
 | [Static Status](https://dwm.suckless.org/patches/staticstatus/)  | allows the status text to be fixed to the bar on a specific monitor rather than being drawn on the focused monitor. Update `staticmonval` to select monitor |
 | [Restart Signal](https://dwm.suckless.org/patches/restartsig/) | adds a keyboard shortcut to restart dwm or alternatively by using `kill -HUP dwmpid` and additionally dwm can quit cleanly by using `kill -TERM dwmpid` |
 | [EWMH Tags](https://dwm.suckless.org/patches/ewmhtags/) | adds EWMH support for _NET_NUMBER_OF_DESKTOPS, _NET_CURRENT_DESKTOP, _NET_DESKTOP_NAMES, and _NET_DESKTOP_VIEWPORT, which allows for compatibility with other bars and programs that request workspace information. for example, polybar's xworkspaces module |
+| [Focus on Active](https://dwm.suckless.org/patches/focusonnetactive/) | By default, dwm response to client requests to _NET_ACTIVE_WINDOW client messages by setting the urgency bit on the named window. This patch activates the window instead. |
 
 ## Appearance
 
