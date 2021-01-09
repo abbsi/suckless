@@ -741,7 +741,7 @@ clientmessage(XEvent *e)
 			view(&a);
 			focus(c);
 			restack(selmon);
-			warp(selmon->sel);
+			if(selmon != c->mon) warp(selmon->sel);
 		}
 	}
 }

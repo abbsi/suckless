@@ -119,7 +119,7 @@ Some note, issues to keep in mind:
   + Not focus on client change if on the same monitor in `restack(Monitor *m)` function
   + `warp()` function was modified to simply center on middle of focused monitor
 + Focus on Active
-  + Added warp function to `clientmessage(XEvent *e)` so that mouse pointer follow focused active window
+  + Added warp function to `clientmessage(XEvent *e)` so that mouse pointer follows focused active window and if not on the same monitor
 
 | Patch | Purpose |
 | ----- | ------- |
