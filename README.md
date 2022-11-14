@@ -5,6 +5,11 @@
 >   + I suggest you delete/move my config.h out of the directory and use it as a reference if you wish.
 >   + After you delete/move `config.h` out and  running `make` will copy `config.def.h` to a new `config.h` which you can start to customize
 
+> DWM Updates not applied (probably due to conflicts with other patches)
+> https://git.suckless.org/dwm/commit/d93ff48803f04f1363bf303af1d7e6ccc5cb8d3f.html#h0-0-50
+> Currently at v6.4 - ba56fe9fea0a28d8184a727a987836a0903e2682
+>   up to https://git.suckless.org/dwm/commit/ba56fe9fea0a28d8184a727a987836a0903e2682.html
+
 # Screen Shots
 
 ## DWM with no Status Bar

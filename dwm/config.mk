@@ -1,5 +1,5 @@
 # dwm version
-VERSION = 6.2
+VERSION = 6.4 - ba56fe9fea0a28d8184a727a987836a0903e2682
 
 # Customize below to fit your system
 
@@ -23,6 +23,7 @@ FREETYPELIBS = -lfontconfig -lXft
 FREETYPEINC = /usr/include/freetype2
 # OpenBSD (uncomment)
 #FREETYPEINC = ${X11INC}/freetype2
+#MANPREFIX = ${PREFIX}/man
 
 # yajl
 YAJLLIBS = -lyajl

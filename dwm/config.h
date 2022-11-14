@@ -10,6 +10,7 @@ static const int topbar            = 1;                /* 0 means bottom bar */
 static const int horizpadbar       = 10;               /* horizontal padding for statusbar */
 static const int vertpadbar        = 15;               /* vertical padding for statusbar */
 static const int showclientind     = 0;                /* 1 means show client indicators on tag */
+static const int lockfullscreen    = 1;                /* 1 will force focus on the fullscreen window */
 
 /* Alternative Bars */
 static const int usealtbar         = 1;                /* 1 means use non-dwm status bar */
@@ -121,7 +122,7 @@ static const Rule rules[] = {
    */
   /* class                        instance                       title              tags mask    swithtotag   isfloating   monitor scratch key*/
   /* Left Monitor */
-  { "firefox",                    "Navigator",                  NULL,              1,           0,            0,           2,         0  },
+  { "firefox",                    "Navigator",                  NULL,              1,           0,            0,           1,         0  },
   { "Thunderbird",                "Mail",                       NULL,              2,           0,            0,           2,         0  },
   { "realvnc-vncviewer",          NULL,                         NULL,              0,           0,            1,           2,         0  },  
   
@@ -198,7 +199,7 @@ static const char *scratchpadcmd[] = {"s", "kitty",
                                            "-o", "background_opacity=0.85",
                                            NULL};
 
-static Key keys[] = {
+static const Key keys[] = {
 
   /* Core Functions */
   { MODKEY,                       XK_p,            spawn,          {.v = dmenucmd } },
@@ -285,7 +286,7 @@ static Key keys[] = {
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
-static Button buttons[] = {
+static const Button buttons[] = {
   /* click           event mask   button           function        argument */
   { ClkLtSymbol,     0,           Button1,         setlayout,      {0} },
   { ClkLtSymbol,     0,           Button2,         setlayout,      {.v = &layouts[2]} },

@@ -10,6 +10,7 @@ static const int topbar            = 1;              /* 0 means bottom bar */
 static const int horizpadbar       = 10;             /* horizontal padding for statusbar */
 static const int vertpadbar        = 15;             /* vertical padding for statusbar */
 static const int showclientind     = 0;              /* 1 means show client indicators on tag */
+static const int lockfullscreen    = 1;              /* 1 will force focus on the fullscreen window */
 
 /* Alternative Bars */
 static const int usealtbar         = 0;              /* 1 means use non-dwm status bar */
@@ -153,7 +154,7 @@ static const char *termcmd[]  = { "st", NULL };
 /* First arg only serves to match against key in rules */
 static const char *scratchpadcmd[] = {"s", "kitty", "--name", "scratchpad", "-o", "initial_window_width=2300", "-o", "initial_window_height=1100", "-o", "background=#383f61", NULL};
 
-static Key keys[] = {
+static const Key keys[] = {
 
   /* Original DWM 6.2 Bindings */
   { MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
@@ -213,7 +214,7 @@ static Key keys[] = {
 
 /* button definitions */
 /* click can be ClkTagBar, ClkLtSymbol, ClkStatusText, ClkWinTitle, ClkClientWin, or ClkRootWin */
-static Button buttons[] = {
+static const Button buttons[] = {
   /* click           event mask   button          function        argument */
   { ClkLtSymbol,     0,           Button1,        setlayout,      {0} },
   { ClkLtSymbol,     0,           Button2,        setlayout,      {.v = &layouts[2]} },
